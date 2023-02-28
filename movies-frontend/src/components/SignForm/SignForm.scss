@@ -1,0 +1,139 @@
+@use '../../utils/cssConstants.scss';
+
+.sign-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  &__logo {
+    background-image: url('../../images/icons/logo__COLOR_main-1.svg');
+    width: 38px;
+    height: 38px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 0;
+    padding: 0 0 50px 0;
+  }
+
+  &__greating {
+    @include cssConstants.title-user-greating-desktop;
+    margin: 0;
+    padding: 0 0 40px;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+  }
+
+  &__input-group {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    width: 100%;
+
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+
+  &__input-label {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #a0a0a0;
+    padding: 20px 0 10px;
+
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+
+  &__input {
+    background: #f9f9f9;
+    border-radius: 8px;
+    width: 396px;
+    height: 46px;
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    color: #000000;
+    border: none;
+    box-sizing: border-box;
+    padding: 0 0 0 20px;
+  }
+
+  &__button-submit {
+    width: 396px;
+    height: 45px;
+    background-color: cssConstants.$color-button-blue;
+    border: none;
+    border-radius: 3px;
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #ffffff;
+    margin: 70px 0 0;
+
+    &_position_down {
+      margin: 180px 0 0;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .sign-form {
+    width: 100%;
+    height: 100%;
+
+    &__logo {
+      width: 38px;
+      height: 38px;
+      align-self: center;
+      padding: 0 0 60px 0;
+    }
+
+    &__greating {
+      padding: 0 0 85px;
+      align-self: center;
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+
+    &__input {
+      width: 260px;
+    }
+
+    &__button-submit {
+      width: 260px;
+      height: 45px;
+      font-size: 12px;
+      line-height: 15px;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

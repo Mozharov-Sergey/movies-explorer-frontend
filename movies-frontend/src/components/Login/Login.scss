@@ -1,0 +1,65 @@
+@use '../../utils/cssConstants.scss';
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: inherit;
+  height: 100vh;
+  width: 100%;
+
+  &__form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+  }
+
+  &__signin-block {
+    
+  }
+
+  &__register-text {
+    align-self: center;
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #a0a0a0;
+    margin: 0;
+    padding: 14px 0 0;
+  }
+
+  &__register-link {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #3456f3;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .login {
+    padding: 56px 30px 30px;
+    box-sizing: border-box;
+
+    &__register-text {
+      font-size: 12px;
+      line-height: 15px;
+    }
+
+    &__register-link {
+      font-size: 12px;
+      line-height: 15px;
+    }
+  }
+}

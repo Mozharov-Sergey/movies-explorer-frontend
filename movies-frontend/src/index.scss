@@ -1,0 +1,30 @@
+// VENDOR
+@use './vendor/normalize.css';
+@use './vendor/fonts.css';
+
+// STYLES
+@use './utils/cssConstants.scss';
+
+@use './components/App/app.scss';
+@use './components/Main/main.scss';
+@use './components/NavTab/NavTab.scss';
+@use './components/Promo/Promo.scss';
+@use './components/AboutProject/AboutProject.scss';
+@use './components/Techs/Techs.scss';
+@use './components/AboutMe/AboutMe.scss';
+@use './components/Portfolio/Portfolio.scss';
+@use './components/Footer/Footer.scss';
+
+@use './components/SearchForm/SearchForm.scss';
+@use './components/MoviesCardList/MoviesCardList.scss';
+@use './components/MoviesCard/MoviesCard.scss';
+@use './components/Register/Register.scss';
+@use './components/Login/Login.scss';
+@use './components/SignForm/SignForm.scss';
+@use './components/NotFound/NotFound.scss';
+@use './components/Profile/Profile.scss';
+@use './components/Popup/Popup.scss';
+@use './components/Menu/Menu.scss';
+@use './components/Account/Account.scss';
+
+@use './components/Switch/Swith.scss';

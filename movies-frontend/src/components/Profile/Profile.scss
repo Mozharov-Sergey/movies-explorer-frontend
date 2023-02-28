@@ -1,0 +1,155 @@
+@use '../../utils/cssConstants.scss';
+
+.profile {
+  width: 100%;
+  height: calc(100vh - 74px); // 74 - высота хедера
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 75px 0 0;
+    margin: 0;
+  }
+
+  &__title {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #000000;
+    padding: 0 0 100px;
+    margin: 0;
+  }
+
+  &__input {
+    font-family: cssConstants.$font-inter;
+    width: 410px;
+    height: 50px;
+    text-align: right;
+    border: none;
+    border-bottom: 1px solid #e8e8e8;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #000000;
+    padding: 0;
+    margin: 0;
+
+    &_last {
+      border: none;
+    }
+  }
+
+  &__input-group {
+    position: relative;
+  }
+
+  &__input-label {
+    font-family: cssConstants.$font-inter;
+    position: absolute;
+    top: 18px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #000000;
+  }
+
+  &__edit {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    color: #000000;
+    margin: 0 0 16px;
+    padding: 0;
+  }
+
+  &__logout {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    color: cssConstants.$color-accent-red;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__controllers {
+    margin: 200px 0 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile {
+    justify-content: center;
+    margin: -55px 0 0;
+
+    &__title {
+      padding: 0 0 80px;
+    }
+
+    &__controllers {
+      margin: 180px 0 0;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .profile {
+    margin: 0;
+    padding: 0 30px 0;
+    box-sizing: border-box;
+
+    &__container {
+      margin: 0;
+      padding: 70px 0 0;
+      width: 100%;
+    }
+
+    &__title {
+      font-size: 24px;
+      line-height: 29px;
+      margin: 0;
+      padding: 0 0 60px 0;
+    }
+
+    &__input {
+      width: 260px;
+      height: 50px;
+      font-size: 11px;
+      line-height: 13px;
+
+
+      &_last {
+        border: none;
+      }
+    }
+
+    &__controllers {
+      margin: auto 0 40px;
+    }
+
+    &__edit {
+      font-size: 12px;
+      line-height: 15px;
+    }
+
+    &__logout {
+      font-size: 12px;
+      line-height: 15px;
+    }
+  }
+}
