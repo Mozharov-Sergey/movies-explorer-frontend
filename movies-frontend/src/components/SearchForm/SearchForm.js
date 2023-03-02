@@ -1,6 +1,6 @@
 import Switch from '../Switch/Switch';
 
-function SearchForm() {
+function SearchForm({handleOpenTooltip}) {
 
   
 
@@ -8,7 +8,7 @@ function SearchForm() {
     <div className="search-form">
       <form className="search-form__form">
         <input className="search-form__bar" type="text" placeholder="Фильм"></input>
-        <button className="search-form__button-submit">Поиск</button>
+        <button className="search-form__button-submit" onClick={handleOpenTooltip}>Поиск</button>
         <div className="search-form__switch">
           <Switch></Switch>
           <label className='search-form__switch-label'>Короткометражки</label>

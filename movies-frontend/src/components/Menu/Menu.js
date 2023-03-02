@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
+
 import close from '../../images/icons/close.svg';
 import Account from '../Account/Account';
-
 import Popup from '../Popup/Popup';
 
 function Menu({ isOpened, handleClose }) {
@@ -15,11 +16,13 @@ function Menu({ isOpened, handleClose }) {
         <div className="menu__container" onClick={handleCloseButtonClick}>
           <button className="menu__button-close"></button>
           <ul className="menu__items">
-            <li className="menu__item">Главная</li>
-            <li className="menu__item">Фильмы</li>
-            <li className="menu__item">Сохранённые фильмы</li>
+            <li ><Link to="/" className="menu__item">Главная</Link></li>
+            <li ><Link to="/movies" className="menu__item">Фильмы</Link></li>
+            <li ><Link to="/saved-movies" className="menu__item">Сохранённые фильмы</Link></li>
           </ul>
-          <div className="menu__account"><Account></Account></div>
+          <Link to="/saved-movies" className="menu__account">
+          <div ><Account></Account></div>
+          </Link>
           
         </div>
       </nav>
@@ -28,3 +31,4 @@ function Menu({ isOpened, handleClose }) {
 }
 
 export default Menu;
+

@@ -2,18 +2,11 @@ import { Link } from 'react-router-dom';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import React from 'react';
 
-function SignForm({ children, buttonName, greating, isLogin, onSubmit }) {
-  const { values, handleChange, errors, isValid, setValues, resetForm, setIsValid } = useFormAndValidation();
-
+function SignForm({ children, buttonName, greating, isLogin, isValid, onSubmit }) {
   function handleSubmit(e) {
     e.preventDefault();
     onSubmit();
   }
-
-  React.useEffect(() => {
-    setValues({ email: '', password: '' });
-    setIsValid(false);
-  }, []);
 
   return (
     <div className="sign-form">
@@ -26,14 +19,23 @@ function SignForm({ children, buttonName, greating, isLogin, onSubmit }) {
         <div>{children}</div>
 
         {!isLogin && (
-          <button className="sign-form__button-submit" type="submit" onClick={handleSubmit}>
+          <button
+            className={'sign-form__button-submit ' + (!isValid && 'sign-form__button-submit_disabled')}
+            type="submit"
+            onClick={handleSubmit}
+            disabled={!isValid}
+          >
             {buttonName}
           </button>
         )}
 
         {isLogin && (
           <button
-            className="sign-form__button-submit sign-form__button-submit_position_down"
+            className={
+              'sign-form__button-submit sign-form__button-submit_position_down ' +
+              (!isValid && 'sign-form__button-submit_disabled')
+            }
+            disabled={!isValid}
             type="submit"
             onClick={handleSubmit}
           >

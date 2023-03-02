@@ -39,10 +39,10 @@ const moviesList = [
 
 
 
-function Movies() {
+function Movies({handleOpenTooltip}) {
   return <div className="movies">
-    <SearchForm></SearchForm>
-    <MoviesCardList moviesList={moviesList} ></MoviesCardList>
+    <SearchForm handleOpenTooltip={handleOpenTooltip}></SearchForm>
+    <MoviesCardList moviesList={moviesList} handleOpenTooltip={handleOpenTooltip} ></MoviesCardList>
   </div>;
 }
 

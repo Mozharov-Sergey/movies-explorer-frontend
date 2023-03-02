@@ -12,6 +12,7 @@ import Profile from '../Profile/Profile';
 import Menu from '../Menu/Menu';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
+import Infotooltip from '../InfoTooltip/InfoTooltip';
 
 function App() {
   const history = useHistory();
@@ -21,6 +22,7 @@ function App() {
   const [isHeaderShow, setIsHeaderShow] = React.useState(true);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [isInfoTooltipOpened, setIsInfoTooltipOpened] = React.useState(false);
 
   React.useEffect(() => {
     if (location.pathname === '/signup' || location.pathname === '/signin') {
@@ -94,6 +96,14 @@ function App() {
     setIsMenuOpened(true);
   }
 
+  function handleOpenTooltip() {
+    setIsInfoTooltipOpened(true);
+  }
+
+  function handleCloseInfoTooltip() {
+    setIsInfoTooltipOpened(false);
+  }
+
   function logOut() {
     localStorage.removeItem('token');
     history.push('/');
@@ -119,12 +129,14 @@ function App() {
             path="/movies/"
             isLoggedIn={isLoggedIn}
             handleMenuOpen={handleMenuOpen}
+            handleOpenTooltip={handleOpenTooltip}
           />
           <ProtectedRoute
             component={SavedMovies}
             path="/saved-movies/"
             isLoggedIn={isLoggedIn}
             handleMenuOpen={handleMenuOpen}
+            handleOpenTooltip={handleOpenTooltip}
           />
           <ProtectedRoute
             component={Profile}
@@ -145,6 +157,11 @@ function App() {
         <Footer></Footer>
       </div>
       <Menu isOpened={isMenuOpened} handleClose={handleMenuClose}></Menu>
+      <Infotooltip
+        isOpened={isInfoTooltipOpened}
+        isAcepted={false}
+        onClose={handleCloseInfoTooltip}
+      ></Infotooltip>
     </div>
   );
 }

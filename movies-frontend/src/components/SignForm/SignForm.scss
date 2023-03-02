@@ -74,6 +74,24 @@
     border: none;
     box-sizing: border-box;
     padding: 0 0 0 20px;
+    outline: none;
+
+    &:focus {
+      border: 1px solid #6c82e6;
+    }
+
+    &_error {
+      color: cssConstants.$color-accent-red;
+    }
+  }
+
+  &__error-message {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: cssConstants.$color-accent-red;
   }
 
   &__button-submit {
@@ -90,9 +108,18 @@
     text-align: center;
     color: #ffffff;
     margin: 70px 0 0;
+    transition: 0.3s;
 
     &_position_down {
       margin: 180px 0 0;
+    }
+
+    &:focus {
+      scale: 98%;
+    }
+
+    &_disabled {
+      background-color: rgb(123, 123, 123)
     }
   }
 }
@@ -121,7 +148,6 @@
       justify-content: space-between;
       width: 100%;
     }
-
 
     &__input {
       width: 260px;

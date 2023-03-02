@@ -1,6 +1,6 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({moviesList}) {
+function MoviesCardList({moviesList, handleOpenTooltip}) {
   const step = 16;
   let toSplit = moviesList.length >= step;
 
@@ -10,7 +10,7 @@ function MoviesCardList({moviesList}) {
 
 
   return (
-    <>
+    <div className='card-list__container'>
       <div className="card-list">
         {moviesList.map((item, index) => {
           return (
@@ -24,9 +24,9 @@ function MoviesCardList({moviesList}) {
         })}
         
       </div>
-      {toSplit && <button className="card-list__more-button">Ещё</button>}
+      {toSplit && <button className="card-list__more-button" onClick={handleOpenTooltip}>Ещё</button>}
       
-    </>
+    </div>
   );
 }
 

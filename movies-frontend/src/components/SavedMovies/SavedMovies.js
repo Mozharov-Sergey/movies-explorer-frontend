@@ -6,7 +6,7 @@ import Footer from '../Footer/Footer';
 import poster1 from '../../images/cards/card_image_1.jpg';
 import poster3 from '../../images/cards/card_image_3.jpg';
 
-function SavedMovies() {
+function SavedMovies(handleOpenTooltip) {
   // В слудующем этапе заменить на запрос.
   const moviesList = [
     {
@@ -24,7 +24,7 @@ function SavedMovies() {
 
   return (
     <div className="saved-movies">
-      <SearchForm></SearchForm>
+      <SearchForm handleOpenTooltip={handleOpenTooltip}></SearchForm>
       <MoviesCardList moviesList={moviesList}></MoviesCardList>
     </div>
   );
