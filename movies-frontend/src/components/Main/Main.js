@@ -10,7 +10,6 @@ import Header from "../Header/Header";
 function Main({isLoggedIn}) {
   return(
     <div className="main">
-      <Header isLoggedIn={false}></Header>
       <Promo></Promo>
       <AboutProject></AboutProject>
       <Techs></Techs>

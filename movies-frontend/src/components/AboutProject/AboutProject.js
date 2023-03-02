@@ -19,6 +19,7 @@ function AboutProject() {
 
   return (
     <div className="about-projects">
+      <a name="about"></a>
       <h2 className="about-projects__title">О проекте</h2>
       <hr className="about-projects__hr"></hr>
 

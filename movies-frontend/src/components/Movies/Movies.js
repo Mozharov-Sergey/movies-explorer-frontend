@@ -39,9 +39,8 @@ const moviesList = [
 
 
 
-function Movies({isLoggedIn, handleMenuOpen}) {
+function Movies() {
   return <div className="movies">
-    <Header isLoggedIn={isLoggedIn} handleMenuOpen={handleMenuOpen}></Header>
     <SearchForm></SearchForm>
     <MoviesCardList moviesList={moviesList} ></MoviesCardList>
   </div>;

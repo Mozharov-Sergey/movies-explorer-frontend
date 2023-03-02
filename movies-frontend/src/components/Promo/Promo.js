@@ -24,7 +24,7 @@ function Promo() {
           Учебный проект студента факультета {!isThin && <br></br>} Веб-разработки.
         </h1>
         <p className="promo__subtitle">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
-        <button className="promo__more">Узнать больше</button>
+        <a href="#about" className="promo__more">Узнать больше</a>
       </div>
     </>
   );

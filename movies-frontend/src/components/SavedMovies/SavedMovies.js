@@ -6,7 +6,7 @@ import Footer from '../Footer/Footer';
 import poster1 from '../../images/cards/card_image_1.jpg';
 import poster3 from '../../images/cards/card_image_3.jpg';
 
-function SavedMovies({ isLoggedIn }) {
+function SavedMovies() {
   // В слудующем этапе заменить на запрос.
   const moviesList = [
     {
@@ -24,7 +24,6 @@ function SavedMovies({ isLoggedIn }) {
 
   return (
     <div className="saved-movies">
-      <Header isLoggedIn={isLoggedIn}></Header>
       <SearchForm></SearchForm>
       <MoviesCardList moviesList={moviesList}></MoviesCardList>
     </div>

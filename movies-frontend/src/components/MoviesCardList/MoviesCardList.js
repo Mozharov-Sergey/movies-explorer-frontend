@@ -22,8 +22,9 @@ function MoviesCardList({moviesList}) {
             ></MoviesCard>
           );
         })}
-        {toSplit && <button className="card-list__more-button">Ещё</button>}
+        
       </div>
+      {toSplit && <button className="card-list__more-button">Ещё</button>}
       
     </>
   );

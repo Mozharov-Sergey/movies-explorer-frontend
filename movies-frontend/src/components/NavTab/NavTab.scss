@@ -10,6 +10,7 @@
   justify-content: space-between;
   padding: 0 70px 0;
   box-sizing: border-box;
+  
 
   &_films {
     background-color: #ffffff;
@@ -38,6 +39,7 @@
     line-height: 16px;
     color: white;
     margin: 0 30px 0 auto;
+    text-decoration: none;
   }
 
   &__signin {
@@ -50,6 +52,7 @@
     border-radius: 3px;
     border: none;
     padding: 8px 20px;
+    text-decoration: none;
   }
 
   &__item {
@@ -61,14 +64,16 @@
     color: #000000;
     margin: 0;
     padding: 0 0 0 20px;
-
-    &:focus {
-      font-weight: 500;
-    }
+    text-decoration: none;
 
     &:nth-last-child(3) {
       padding: 0;
     }
+
+    &_active{
+      font-weight: 500;
+    }
+
   }
 
   &__account-container {
@@ -89,6 +94,10 @@
     width: 28px;
     height: 3px;
     background-color: #000000;
+  }
+
+  &__account-container {
+    text-decoration: none;
   }
 }
 

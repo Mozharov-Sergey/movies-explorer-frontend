@@ -1,9 +1,9 @@
 import NavTab from '../NavTab/NavTab';
 
-function Header({ isLoggedIn, isFilms, isLanding, handleMenuOpen }) {
+function Header({ isLoggedIn, handleMenuOpen }) {
   return (
     <header>
-      <NavTab isLoggedIn={isLoggedIn} isFilms={isFilms} isLanding={isLanding} handleMenuOpen={handleMenuOpen}></NavTab>
+      <NavTab isLoggedIn={isLoggedIn} handleMenuOpen={handleMenuOpen}></NavTab>
     </header>
   );
 }
