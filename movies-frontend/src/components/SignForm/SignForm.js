@@ -10,9 +10,7 @@ function SignForm({ children, buttonName, greating, isLogin, isValid, onSubmit }
 
   return (
     <div className="sign-form">
-      <Link to="/">
-        <div className="sign-form__logo"></div>
-      </Link>
+      <Link to="/" className="sign-form__logo" />
       <h3 className="sign-form__greating">{greating}</h3>
 
       <form className="sign-form__form">

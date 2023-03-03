@@ -18,7 +18,8 @@
     color: #000000;
     margin: 0 0 0;
     padding: 0 0 0;
-    max-width: calc(270px - 32px);
+    max-width: 80%;
+    height: 32px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -83,11 +84,14 @@
   .movies-card {
     &__image {
       max-height: none;
-      min-width: 300px;
-      width: 100%;
+      width: 300px;
+      // max-width: 300px;
+      // width: 100%;
     }
 
     &__title {
+      max-width: 250px;
+      // width: 100px;
       font-size: 12px;
       line-height: 15px;
     }

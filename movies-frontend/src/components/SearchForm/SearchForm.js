@@ -7,7 +7,7 @@ function SearchForm({handleOpenTooltip}) {
   return (
     <div className="search-form">
       <form className="search-form__form">
-        <input className="search-form__bar" type="text" placeholder="Фильм"></input>
+        <input className="search-form__bar" type="text" placeholder="Фильм" required></input>
         <button className="search-form__button-submit" onClick={handleOpenTooltip}>Поиск</button>
         <div className="search-form__switch">
           <Switch></Switch>

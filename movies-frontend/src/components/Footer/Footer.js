@@ -26,10 +26,10 @@ function Footer() {
         {!isSizeS && (
           <>
             <p className="footer__copyright-year">&copy; {new Date().getFullYear()}</p>
-            <a className="footer__yp" href={links.YandexPracticum}>
+            <a className="footer__yp" href={links.YandexPracticum} target="_blank" rel="noreferrer">
               Яндекс.Практикум
             </a>
-            <a className="footer__gh" href={links.Github}>
+            <a className="footer__gh" href={links.Github} target="_blank" rel="noreferrer">
               Github
             </a>
           </>
@@ -37,10 +37,10 @@ function Footer() {
 
         {isSizeS && (
           <>
-            <a className="footer__yp" href={links.YandexPracticum}>
+            <a className="footer__yp" href={links.YandexPracticum} target="_blank" rel="noreferrer">
               Яндекс.Практикум
             </a>
-            <a className="footer__gh" href={links.Github}>
+            <a className="footer__gh" href={links.Github} target="_blank" rel="noreferrer">
               Github
             </a>
             <p className="footer__copyright-year">&copy; {new Date().getFullYear()}</p>

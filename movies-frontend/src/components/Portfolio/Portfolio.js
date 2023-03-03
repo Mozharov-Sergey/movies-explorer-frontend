@@ -2,27 +2,44 @@ function Portfolio() {
   return (
     <div className="portfolio">
       <h2 className="portfolio__title">Портфолио</h2>
-      <div className="portfolio__container">
-        <div className="portfolio__item">
-          <a href="https://mozharov-sergey.github.io/how-to-learn/" className="portfolio__item-title">Статичный сайт</a>
-          <div className="portfolio__item-arrow"></div>
-        </div>
-        {/* <div className="portfolio__item-hr"></div> */}
+      <ul className="portfolio__container">
 
-        <div className="portfolio__item">
-          <a href="https://mozharov-sergey.github.io/russian-travel/" className="portfolio__item-title">Адаптивный сайт</a>
-          <div className="portfolio__item-arrow"></div>
-        </div>
-        {/* <div className="portfolio__item-hr"></div> */}
-        
+        <li className="portfolio__item">
+          <a
+            href="https://mozharov-sergey.github.io/how-to-learn/"
+            target="_blank"
+            rel="noreferrer"
+            className="portfolio__item"
+          >
+            <h3 className="portfolio__item-title">Статичный сайт</h3>
+            <div className="portfolio__item-arrow"></div>
+          </a>
+        </li>
 
-        <div className="portfolio__item">
-          <a href="https://mozharov-sergey.github.io/react-mesto-auth/" className="portfolio__item-title">Одностраничное приложение</a>
-          <div className="portfolio__item-arrow"></div>
-        </div>
-        {/* <div className="portfolio__item-hr"></div> */}
-        
-      </div>
+        <li className="portfolio__item">
+          <a
+            href="https://mozharov-sergey.github.io/russian-travel/"
+            target="_blank"
+            rel="noreferrer"
+            className="portfolio__item"
+          >
+            <h3 className="portfolio__item-title">Адаптивный сайт</h3>
+            <div className="portfolio__item-arrow"></div>
+          </a>
+        </li>
+
+        <li className="portfolio__item">
+          <a
+            href="https://mozharov-sergey.github.io/react-mesto-auth/"
+            target="_blank"
+            rel="noreferrer"
+            className="portfolio__item"
+          >
+            <h3 className="portfolio__item-title">Одностраничное приложение</h3>
+            <div className="portfolio__item-arrow"></div>
+          </a>
+        </li>
+      </ul>
     </div>
   );
 }

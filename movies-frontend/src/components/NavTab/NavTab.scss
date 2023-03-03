@@ -74,6 +74,10 @@
       font-weight: 500;
     }
 
+    &_landing {
+      color: white;
+    }
+
   }
 
   &__account-container {
@@ -94,6 +98,10 @@
     width: 28px;
     height: 3px;
     background-color: #000000;
+
+    &_landing {
+      background-color: #ffffff;
+    }
   }
 
   &__account-container {
