@@ -11,19 +11,21 @@ function MoviesCardList({moviesList, handleOpenTooltip}) {
 
   return (
     <div className='card-list__container'>
-      <div className="card-list">
+      <ul className="card-list">
         {moviesList.map((item, index) => {
           return (
+            <li className="card-list__item">
             <MoviesCard
               name={item.name}
               duration={item.duration}
               poster={item.poster}
               key={index} // При появлении API заменить index на _id картинки.
             ></MoviesCard>
+             </li>
           );
         })}
         
-      </div>
+      </ul>
       {toSplit && <button className="card-list__more-button" onClick={handleOpenTooltip}>Ещё</button>}
       
     </div>
