@@ -20,10 +20,10 @@ function MoviesCard({ name, duration, poster }) {
       <img className="movies-card__image" src={posterImage} alt="card"></img>
       <div className="movies-card__info">
         <p className="movies-card__title">{name}</p>
-        <div
+        <button
           className={`movies-card__like ${isLiked && 'movies-card__like_active'}`}
           onClick={handleLikeClick}
-        ></div>
+        ></button>
       </div>
       <div className="movies-card__hr"></div>
       <p className="movies-card__duration">{duration}</p>
