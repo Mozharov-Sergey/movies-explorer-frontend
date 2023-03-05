@@ -7,7 +7,7 @@ function Account({ isActive, isMenuPlaced }) {
   return (
     <div className={`account ${(isActive && 'account_active') || ''}`}>
       <p className={`account__label ${((location.pathname === '/' && !isMenuPlaced) && 'account__label_landing') || ''}`}>Аккаунт</p>
-      <img className="account__icon" src={accountIcon}></img>
+      <img className="account__icon" src={accountIcon} alt="иконка входа в настройки аккаунта"></img>
     </div>
   );
 }

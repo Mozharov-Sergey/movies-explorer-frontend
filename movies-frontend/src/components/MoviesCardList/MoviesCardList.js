@@ -14,12 +14,11 @@ function MoviesCardList({moviesList, handleOpenTooltip}) {
       <ul className="card-list">
         {moviesList.map((item, index) => {
           return (
-            <li className="card-list__item">
+            <li className="card-list__item" key={index}>
             <MoviesCard
               name={item.name}
               duration={item.duration}
               poster={item.poster}
-              key={index} // При появлении API заменить index на _id картинки.
             ></MoviesCard>
              </li>
           );

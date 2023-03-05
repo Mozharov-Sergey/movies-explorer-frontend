@@ -11,9 +11,9 @@ function Techs() {
       </p>
       
       <ul className="techs__container">
-        {usedTechnologies.map((item) => {
+        {usedTechnologies.map((item, index) => {
           return (
-            <li className="techs__item">
+            <li className="techs__item" key={index}>
               <p className="techs__item-text">{item}</p>
             </li>
           );
