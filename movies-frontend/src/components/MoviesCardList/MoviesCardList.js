@@ -10,7 +10,7 @@ function MoviesCardList({moviesList, handleOpenTooltip}) {
 
 
   return (
-    <div className='card-list__container'>
+    <>
       <ul className="card-list">
         {moviesList.map((item, index) => {
           return (
@@ -26,9 +26,8 @@ function MoviesCardList({moviesList, handleOpenTooltip}) {
         })}
         
       </ul>
-      {toSplit && <button className="card-list__more-button" onClick={handleOpenTooltip}>Ещё</button>}
-      
-    </div>
+      {toSplit && <button className="more-button" onClick={handleOpenTooltip}>Ещё</button>}
+      </>
   );
 }
 

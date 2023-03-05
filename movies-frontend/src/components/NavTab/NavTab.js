@@ -7,9 +7,9 @@ function NavTab({ isLoggedIn, handleMenuOpen }) {
   const [isMSize, setIsMSize] = React.useState(false);
   const location = useLocation();
 
-  let [isMovies, setIsMovies] = React.useState(location.pathname === '/movies');
-  let [isSavedMovies, setIsSavedMovies] = React.useState(location.pathname === '/saved-movies');
-  let [isProfile, setIsProfile] = React.useState(location.pathname === '/profile');
+  const [isMovies, setIsMovies] = React.useState(location.pathname === '/movies');
+  const [isSavedMovies, setIsSavedMovies] = React.useState(location.pathname === '/saved-movies');
+  const [isProfile, setIsProfile] = React.useState(location.pathname === '/profile');
 
   React.useEffect(() => {
     setIsMovies(location.pathname === '/movies');
@@ -46,14 +46,14 @@ function NavTab({ isLoggedIn, handleMenuOpen }) {
       )}
 
       {isLoggedIn && (
-        <nav className={`nav-tab ${location.pathname !== '/' && 'nav-tab_films'}`}>
+        <nav className={`nav-tab ${(location.pathname !== '/' && 'nav-tab_films') || ''}`}>
           <Link to="/" className="nav-tab__logo nav-tab__logo_films"></Link>
           {!isMSize && (
             <>
               <Link
                 to="/movies"
                 
-                className={`nav-tab__item ${isMovies && 'nav-tab__item_active'} ${
+                className={`nav-tab__item ${(isMovies && 'nav-tab__item_active') || ''} ${
                   location.pathname === '/' && 'nav-tab__item_landing'
                 }`}
               >
@@ -62,7 +62,7 @@ function NavTab({ isLoggedIn, handleMenuOpen }) {
               <Link
                 to="/saved-movies"
                 
-                className={`nav-tab__item ${isSavedMovies && 'nav-tab__item_active'} ${
+                className={`nav-tab__item ${(isMovies && 'nav-tab__item_active') || ''} ${
                   location.pathname === '/' && 'nav-tab__item_landing'
                 }`}
               >
@@ -77,18 +77,18 @@ function NavTab({ isLoggedIn, handleMenuOpen }) {
           {isMSize && (
             <div className="nav-tab__hamburger-menu" onClick={handleMenuOpen}>
               <span
-                className={`nav-tab__hamburger-element ${
-                  location.pathname === '/' && 'nav-tab__hamburger-element_landing'
+                className={`nav-tab__hamburger-element ${(
+                  location.pathname === '/' && 'nav-tab__hamburger-element_landing') || ''
                 }`}
               ></span>
               <span
-                className={`nav-tab__hamburger-element ${
-                  location.pathname === '/' && 'nav-tab__hamburger-element_landing'
+                className={`nav-tab__hamburger-element ${(
+                  location.pathname === '/' && 'nav-tab__hamburger-element_landing') || ''
                 }`}
               ></span>
               <span
-                className={`nav-tab__hamburger-element ${
-                  location.pathname === '/' && 'nav-tab__hamburger-element_landing'
+                className={`nav-tab__hamburger-element ${(
+                  location.pathname === '/' && 'nav-tab__hamburger-element_landing') || ''
                 }`}
               ></span>
             </div>

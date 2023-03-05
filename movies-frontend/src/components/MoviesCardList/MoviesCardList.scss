@@ -9,34 +9,9 @@
   align-items: flex-start;
   justify-content: flex-start;
   box-sizing: border-box;
-
+  
   &__item {
     list-style: none;
-  }
-
-  &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-  }
-
-  &__more-button {
-    width: 320px;
-    height: 36px;
-    background-color: #f9f9f9;
-    border: none;
-    border-radius: 6px;
-    font-family: cssConstants.$font-inter;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 15px;
-    color: #000000;
-    margin: 50px calc(50% - (320px / 2)) 80px;
-    padding: 0;
-    box-sizing: border-box;
-    text-align: center;
   }
 
   &__not-found {
@@ -48,6 +23,24 @@
     text-align: center;
     color: #a0a0a0;
   }
+}
+
+.more-button {
+  width: 320px;
+  height: 36px;
+  background-color: #f9f9f9;
+  border: none;
+  border-radius: 6px;
+  font-family: cssConstants.$font-inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #000000;
+  margin: 50px calc(50% - (320px / 2)) 80px;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 @media (max-width: 980px) {

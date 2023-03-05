@@ -1,4 +1,5 @@
 import React from 'react';
+import RegLog from '../RegLog/RegLog';
 
 import SignForm from '../SignForm/SignForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
@@ -19,12 +20,16 @@ function Register({ handleRegister }) {
   return (
     <div className="register">
       <div className="register__form-container">
-
-        <SignForm buttonName="Зарегистрироваться" greating="Добро пожаловать!" onSubmit={handleSubmit} isValid={isValid}>
+        <SignForm
+          buttonName="Зарегистрироваться"
+          greating="Добро пожаловать!"
+          onSubmit={handleSubmit}
+          isValid={isValid}
+        >
           <div className="sign-form__input-group">
             <label className="sign-form__input-label">{'Имя'}</label>
             <input
-              className={"sign-form__input " + (errors.name && "sign-form__input_error")}
+              className={'sign-form__input ' + (errors.name && 'sign-form__input_error')}
               placeholder={'Имя'}
               type="text"
               name="name"
@@ -34,13 +39,13 @@ function Register({ handleRegister }) {
               value={values.name || ''}
               onChange={handleChange}
             ></input>
-            {errors.name && <p className="sign-form__error-message" >{errors.name}</p>}
+            {errors.name && <p className="sign-form__error-message">{errors.name}</p>}
           </div>
 
           <div className="sign-form__input-group">
             <label className="sign-form__input-label">{'Email'}</label>
             <input
-              className={"sign-form__input " + (errors.email && "sign-form__input_error")}
+              className={'sign-form__input ' + (errors.email && 'sign-form__input_error')}
               placeholder={'Email'}
               type="email"
               name="email"
@@ -48,13 +53,13 @@ function Register({ handleRegister }) {
               value={values.email || ''}
               onChange={handleChange}
             ></input>
-            {errors.email && <p className="sign-form__error-message" >{errors.email}</p>}
+            {errors.email && <p className="sign-form__error-message">{errors.email}</p>}
           </div>
 
           <div className="sign-form__input-group">
             <label className="sign-form__input-label">{'Пароль'}</label>
             <input
-              className={"sign-form__input " + (errors.password && "sign-form__input_error")}
+              className={'sign-form__input ' + (errors.password && 'sign-form__input_error')}
               placeholder={'Пароль'}
               type="password"
               name="password"
@@ -64,18 +69,10 @@ function Register({ handleRegister }) {
               value={values.password || ''}
               onChange={handleChange}
             ></input>
-            {errors.password && <p className="sign-form__error-message" >{errors.password}</p>}
+            {errors.password && <p className="sign-form__error-message">{errors.password}</p>}
           </div>
         </SignForm>
-
-        <div className="register__signin-block">
-          <p className="register__signin-text">
-            Уже зарегистрированы?{' '}
-            <Link className="register__signin-link" to='/signin'>
-              Войти
-            </Link>
-          </p>
-        </div>
+        <RegLog isReg={true}></RegLog>
       </div>
     </div>
   );

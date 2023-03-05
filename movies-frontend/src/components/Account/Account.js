@@ -5,8 +5,8 @@ function Account({ isActive, isMenuPlaced }) {
   const location = useLocation();
 
   return (
-    <div className={`account__container ${isActive && 'account__container_active'}`}>
-      <p className={`account__label ${(location.pathname === '/' && !isMenuPlaced) && 'account__label_landing'}`}>Аккаунт</p>
+    <div className={`account ${(isActive && 'account_active') || ''}`}>
+      <p className={`account__label ${((location.pathname === '/' && !isMenuPlaced) && 'account__label_landing') || ''}`}>Аккаунт</p>
       <img className="account__icon" src={accountIcon}></img>
     </div>
   );
