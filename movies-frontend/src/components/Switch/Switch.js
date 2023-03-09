@@ -1,8 +1,11 @@
-function Checkbox() {
+import React from 'react';
+
+function Checkbox({ handleClick }) {
+
   return (
-    <label className="switch">
+    <label className="switch" >
       <input type="checkbox"></input>
-      <span className="slider round"></span>
+      <span className="slider round" onClick={handleClick}></span>
     </label>
   );
 }

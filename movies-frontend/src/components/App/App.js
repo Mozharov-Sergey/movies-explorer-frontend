@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import authApi from '../../utils/auth';
+import authApi from '../../utils/Auth';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';

@@ -1,32 +1,93 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
+import useResize from 'use-resize';
+import React from 'react';
+import { memo } from 'react';
 
-function MoviesCardList({moviesList, handleOpenTooltip}) {
-  const step = 16;
-  let toSplit = moviesList.length >= step;
+function MoviesCardList({ moviesList, handleOpenTooltip }) {
+  const size = useResize();
+  const [showMoreButton, setShowMoreButton] = React.useState(false);
+  const [pointer, setPointer] = React.useState(0);
+  const [showList, setShowList] = React.useState([]);
 
-  if(!moviesList || moviesList.length === 0) {
-    return(<p className="card-list__not-found">Фильмов с такими параметрами не найдено</p>)
+  React.useEffect(() => {
+    showInitialCards();
+  }, [moviesList]);
+
+  React.useEffect(() => {
+    showButton();
+  }, [showList]);
+
+  function showInitialCards() {
+    let startSplitPosition = 0;
+    if (size.width > 980) {
+      startSplitPosition = 16;
+    } else if (768 < size.width && size.width < 980) {
+      startSplitPosition = 12;
+    } else if (500 < size.width && size.width < 768) {
+      startSplitPosition = 8;
+    } else {
+      startSplitPosition = 5;
+    }
+    let list = Array.from(moviesList).splice(0, startSplitPosition);
+    setShowList(list);
+    setPointer(startSplitPosition - 1);
   }
 
+  function showMoreCards(e) {
+    let step = 0;
+    if (size.width > 980) {
+      step = 4;
+    } else if (768 < size.width && size.width < 980) {
+      step = 3;
+    } else if (500 < size.width && size.width < 768) {
+      step = 2;
+    } else {
+      step = 2;
+    }
+
+    let addCards = Array.from(moviesList).splice(pointer, step);
+    setPointer(pointer + step);
+    setShowList(showList.concat(addCards));
+  }
+
+  function showButton() {
+    let step = 0;
+    if (size.width > 980) {
+      step = 16;
+    } else if (768 < size.width && size.width < 980) {
+      step = 12;
+    } else if (500 < size.width && size.width < 768) {
+      step = 8;
+    } else {
+      step = 5;
+    }
+
+    const isShown = showList.length >= step;
+    const isEndReached = ((pointer) >= moviesList.length)
+    setShowMoreButton(isShown && (!isEndReached));
+  }
 
   return (
     <>
-      <ul className="card-list">
-        {moviesList.map((item, index) => {
-          return (
-            <li className="card-list__item" key={index}>
-            <MoviesCard
-              name={item.name}
-              duration={item.duration}
-              poster={item.poster}
-            ></MoviesCard>
-             </li>
-          );
-        })}
-        
-      </ul>
-      {toSplit && <button className="more-button" onClick={handleOpenTooltip}>Ещё</button>}
-      </>
+      {Object.keys(moviesList).length !== 0 && (
+        <ul className="card-list">
+          {showList.map((item) => {
+
+            return (
+              <li className="card-list__item" key={item.id}>
+                <MoviesCard movie={item} />
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      {showMoreButton && (
+        <button className="more-button" type="button" onClick={showMoreCards}>
+          Ещё
+        </button>
+      )}
+    </>
   );
 }
 
