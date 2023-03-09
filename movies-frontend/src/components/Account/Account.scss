@@ -1,0 +1,49 @@
+@use '../../utils/cssConstants.scss';
+
+.account {
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 13px;
+  // padding: 0 0 0 50px;
+  padding: 3px;
+
+  &_active {
+    border: 1px solid rgb(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+
+  &__item {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    color: #000000;
+    margin: 0;
+    padding: 0 0 0 20px;
+  
+    &:nth-last-child(3) {
+      padding: 0;
+    }
+  }
+
+  &__label {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+
+    &_landing {
+      color: white;
+    }
+  }
+}
+

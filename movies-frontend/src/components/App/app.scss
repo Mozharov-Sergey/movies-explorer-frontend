@@ -1,0 +1,7 @@
+@use '../../utils/cssConstants.scss';
+
+.app {
+  max-width: cssConstants.$page-width-max;
+  width: 100%;
+  min-height: 100vh;
+}

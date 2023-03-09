@@ -1,0 +1,158 @@
+@use '../../utils/cssConstants.scss';
+
+.about-me {
+  padding: 110px 70px 0;
+
+  &__title {
+    @include cssConstants.title-desktop;
+  }
+
+  &__hr {
+    margin: 23px 0 0;
+    padding: 0;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 66px 0 0;
+  }
+
+  &__name {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 58px;
+    letter-spacing: -0.04em;
+    color: #000000;
+    margin: 0;
+    padding: 0 0 0;
+  }
+
+  &__subtitle {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    color: #000000;
+    margin: 0;
+    padding: 18px 0 0;
+  }
+
+  &__about {
+    max-width: 600px;
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #000000;
+    margin: 0;
+    padding: 26px 0 0;
+  }
+
+  &__github {
+    font-family: cssConstants.$font-inter;
+    display: block;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+    text-decoration: none;
+    padding: 95px 0 0; // в макете значение 90
+  }
+
+  &__photo {
+    width: 270px;
+    height: 327px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 1050px) {
+  .about-me {
+    &__about {
+      max-width: 450px;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .about-me {
+    padding: 90px 50px 0;
+
+    &__name {
+      font-size: 40px;
+      line-height: 40px;
+    }
+
+    &__subtitle {
+      font-size: 12px;
+      line-height: 18px;
+      padding: 16px 0 0;
+    }
+
+    &__about {
+      font-size: 12px;
+      line-height: 18px;
+      padding: 20px 20px 0 0;
+      max-width: 364px;
+    }
+
+    &__photo {
+      width: 255px;
+      height: 307px;
+    }
+
+    &__github {
+      padding: 88px 0 0;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .about-me {
+    padding: 70px 14px;
+
+    &__title {
+      @include cssConstants.title-mobile;
+    }
+
+    &__photo {
+      width: 100%;
+      aspect-ratio: 19 / 22;
+      margin: 60px 0 0;
+      min-height: 352px;
+    }
+
+    &__name {
+      font-size: 30px;
+      line-height: 36px;
+      padding: 40px 0 0;
+    }
+
+    &__subtitle {
+      font-size: 11px;
+      line-height: 16px;
+    }
+
+    &__about {
+      font-size: 11px;
+      line-height: 16px;
+      padding: 25px 0 0;
+      width: 100%;
+      max-width: none;
+    }
+
+    &__github {
+      padding: 40px 0 0;
+    }
+  }
+}
