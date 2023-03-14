@@ -8,12 +8,23 @@
   align-items: center;
   justify-content: flex-start;
 
+  &__error-message {
+    font-family: cssConstants.$font-inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: cssConstants.$color-accent-red;
+    word-wrap: normal;
+  }
+
   &__container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 75px 0 0;
     margin: 0;
+    width: 410px;
   }
 
   &__title {
@@ -50,8 +61,8 @@
 
     &:focus {
       border-bottom: 1px solid #6c82e6;
+    }
   }
-}
 
   &__input-group {
     position: relative;
@@ -79,6 +90,10 @@
     margin: 0 0 16px;
     padding: 0;
     cursor: pointer;
+
+    &_disabled {
+      color: #A0A0A0;
+    }
   }
 
   &__logout {
@@ -123,7 +138,7 @@
     &__container {
       margin: 0;
       padding: 70px 0 0;
-      width: 100%;
+      width: 260px;
     }
 
     &__title {
@@ -138,7 +153,6 @@
       height: 50px;
       font-size: 11px;
       line-height: 13px;
-
 
       &_last {
         border: none;

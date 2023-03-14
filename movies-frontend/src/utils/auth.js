@@ -27,7 +27,32 @@ class Auth {
       body: JSON.stringify({
         password: password,
         email: email,
-        name: name
+        name: name,
+      }),
+    }).then((res) => this._checkResponse(res));
+  }
+
+  getUserData() {
+    const token = localStorage.getItem('token');
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    }).then((res) => this._checkResponse(res));
+  }
+
+  updateUserData(email, name) {
+    const token = localStorage.getItem('token');
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        email: email,
+        name: name,
       }),
     }).then((res) => this._checkResponse(res));
   }

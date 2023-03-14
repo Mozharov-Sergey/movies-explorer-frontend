@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  width: 396px;
 
   &__logo {
     background-image: url('../../images/icons/logo__COLOR_main-1.svg');
@@ -126,7 +127,7 @@
 
 @media (max-width: 500px) {
   .sign-form {
-    width: 100%;
+    width: 260px;
     height: 100%;
 
     &__logo {

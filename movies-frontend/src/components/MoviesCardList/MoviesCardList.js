@@ -1,9 +1,9 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 import useResize from 'use-resize';
 import React from 'react';
-import { memo } from 'react';
+import moviesApi from '../../utils/MoviesApi';
 
-function MoviesCardList({ moviesList, handleOpenTooltip }) {
+function MoviesCardList({ moviesList, isSaved }) {
   const size = useResize();
   const [showMoreButton, setShowMoreButton] = React.useState(false);
   const [pointer, setPointer] = React.useState(0);
@@ -29,6 +29,7 @@ function MoviesCardList({ moviesList, handleOpenTooltip }) {
       startSplitPosition = 5;
     }
     let list = Array.from(moviesList).splice(0, startSplitPosition);
+    list = list.filter(Boolean);
     setShowList(list);
     setPointer(startSplitPosition - 1);
   }
@@ -63,8 +64,8 @@ function MoviesCardList({ moviesList, handleOpenTooltip }) {
     }
 
     const isShown = showList.length >= step;
-    const isEndReached = ((pointer) >= moviesList.length)
-    setShowMoreButton(isShown && (!isEndReached));
+    const isEndReached = pointer >= moviesList.length;
+    setShowMoreButton(isShown && !isEndReached);
   }
 
   return (
@@ -72,6 +73,9 @@ function MoviesCardList({ moviesList, handleOpenTooltip }) {
       {Object.keys(moviesList).length !== 0 && (
         <ul className="card-list">
           {showList.map((item) => {
+            if (isSaved) {
+              item.isSaved = true;
+            }
 
             return (
               <li className="card-list__item" key={item.id}>

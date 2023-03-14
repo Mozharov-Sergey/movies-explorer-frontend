@@ -59,7 +59,7 @@ function NavTab({ isLoggedIn, handleMenuOpen }) {
               </Link>
               <Link
                 to="/saved-movies"
-                className={`nav-tab__item ${(isMovies && 'nav-tab__item_active') || ''} ${
+                className={`nav-tab__item ${(isSavedMovies && 'nav-tab__item_active') || ''} ${
                   location.pathname === '/' && 'nav-tab__item_landing'
                 }`}
               >

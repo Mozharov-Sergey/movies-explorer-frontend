@@ -13,6 +13,7 @@ import Menu from '../Menu/Menu';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Infotooltip from '../InfoTooltip/InfoTooltip';
+import { CurrentUserContext } from '../../contexts/currentUserContext';
 
 function App() {
   const history = useHistory();
@@ -21,9 +22,13 @@ function App() {
   const [isMenuOpened, setIsMenuOpened] = React.useState(false);
   const [isHeaderShow, setIsHeaderShow] = React.useState(true);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = React.useState(false);
+  const [tooltipMessage, setTooltipMessage] = React.useState('');
+  const [tooltipStatusAcepted, setTooltipStatusAcepted] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({});
 
+  // На страницах регистрации и авторизации шапка не показывается.
+  // Этот хук отвечает за показ шапки на этих страницах
   React.useEffect(() => {
     if (location.pathname === '/signup' || location.pathname === '/signin') {
       setIsHeaderShow(false);
@@ -31,6 +36,16 @@ function App() {
       setIsHeaderShow(true);
     }
   }, [location]);
+
+  // Нужно для сохранения информации о пользователе между перезагрузками страницы
+  React.useEffect(() => {
+    const name = localStorage.getItem('userName');
+    const email = localStorage.getItem('userEmail');
+
+    if (currentUser.name !== name && currentUser.email !== email) {
+      setCurrentUser({ email, name });
+    }
+  }, [currentUser]);
 
   React.useEffect(() => {
     tokenCheck();
@@ -42,20 +57,34 @@ function App() {
     }
   }, [isLoggedIn]);
 
+  function handleUpdateUserData({ email, name }) {
+    authApi
+      .updateUserData(email, name)
+      .then((res) => {
+        localStorage.setItem('userName', res.name);
+        localStorage.setItem('userEmail', res.email);
+        setCurrentUser({ email: res.email, name: res.name });
+      })
+      .catch((err) => console.log(err));
+  }
+
   function handleRegister(email, password, name) {
     authApi
       .signup(email, password, name)
       .then((res) => {
         if (res) {
-          console.log('profit');
+          setTooltipMessage('Вы успешно зарегистрированы!');
           openSucessNotification();
-          history.push('/signin');
         }
       })
+      .then(() => {
+        authApi.signin(email, password).then((res) => {
+          localStorage.setItem('token', res.token);
+          setIsLoggedIn(true);
+        });
+      })
       .catch((err) => {
-        console.log(err);
-        openErrorNotification();
-        setErrorMessage(err.message || err.error);
+        openErrorNotification(err.validation.body.message || err.error);
       });
   }
 
@@ -66,9 +95,15 @@ function App() {
         localStorage.setItem('token', res.token);
         setIsLoggedIn(true);
       })
+      .then((res) =>
+        authApi.getUserData().then((userData) => {
+          setCurrentUser(userData);
+          localStorage.setItem('userName', userData.name);
+          localStorage.setItem('userEmail', userData.email);
+        })
+      )
       .catch((err) => {
-        setErrorMessage(err.message || err.error);
-        openErrorNotification();
+        openErrorNotification(err.validation.body.message || err.error);
       });
   }
 
@@ -80,12 +115,15 @@ function App() {
     }
   }
 
-  function openErrorNotification() {
-    // Открыть попап с ошибкой
+  function openErrorNotification(message) {
+    setTooltipMessage(message);
+    setTooltipStatusAcepted(false);
+    setIsInfoTooltipOpened(true);
   }
 
   function openSucessNotification() {
-    // Открыть попап с ok
+    setIsInfoTooltipOpened(true);
+    setTooltipStatusAcepted(true);
   }
 
   function handleMenuClose() {
@@ -102,6 +140,13 @@ function App() {
 
   function handleCloseInfoTooltip() {
     setIsInfoTooltipOpened(false);
+    setTooltipMessage('');
+  }
+
+  function handleEmptySearchRequest() {
+    setIsInfoTooltipOpened(false);
+    setTooltipMessage('Введите поисковый запрос');
+    handleOpenTooltip();
   }
 
   function logOut() {
@@ -111,59 +156,61 @@ function App() {
   }
 
   return (
-    
-    <div className="root">
-      <div className="app">
-        {isHeaderShow && <Header isLoggedIn={isLoggedIn} handleMenuOpen={handleMenuOpen}></Header>}
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="root">
+        <div className="app">
+          {isHeaderShow && <Header isLoggedIn={isLoggedIn} handleMenuOpen={handleMenuOpen}></Header>}
 
-        <Switch>
-          <Route path="/signup/">
-            <Register handleRegister={handleRegister} />
-          </Route>
+          <Switch>
+            <Route path="/signup/">
+              <Register handleRegister={handleRegister} />
+            </Route>
 
-          <Route path="/signin/">
-            <Login handleSignIn={handleSignIn} />
-          </Route>
+            <Route path="/signin/">
+              <Login handleSignIn={handleSignIn} />
+            </Route>
 
-          <ProtectedRoute
-            component={Movies}
-            path="/movies/"
-            isLoggedIn={isLoggedIn}
-            handleMenuOpen={handleMenuOpen}
-            handleOpenTooltip={handleOpenTooltip}
-          />
-          <ProtectedRoute
-            component={SavedMovies}
-            path="/saved-movies/"
-            isLoggedIn={isLoggedIn}
-            handleMenuOpen={handleMenuOpen}
-            handleOpenTooltip={handleOpenTooltip}
-          />
-          <ProtectedRoute
-            component={Profile}
-            path="/profile/"
-            isLoggedIn={isLoggedIn}
-            onLogout={logOut}
-            handleMenuOpen={handleMenuOpen}
-          />
+            <ProtectedRoute
+              component={Movies}
+              path="/movies/"
+              isLoggedIn={isLoggedIn}
+              handleMenuOpen={handleMenuOpen}
+              onEmptyInput={handleEmptySearchRequest}
+            />
+            <ProtectedRoute
+              component={SavedMovies}
+              path="/saved-movies/"
+              isLoggedIn={isLoggedIn}
+              handleMenuOpen={handleMenuOpen}
+              onEmptyInput={handleEmptySearchRequest}
+            />
+            <ProtectedRoute
+              component={Profile}
+              path="/profile/"
+              isLoggedIn={isLoggedIn}
+              onLogout={logOut}
+              onSubmitUpdate={handleUpdateUserData}
+            />
 
-          <Route exact path="/">
-            <Main isLoggedIn={isLoggedIn} />
-          </Route>
+            <Route exact path="/">
+              <Main isLoggedIn={isLoggedIn} />
+            </Route>
 
-          <Route exact path="*">
-            <NotFound />
-          </Route>
-        </Switch>
-        <Footer></Footer>
+            <Route exact path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+          <Footer></Footer>
+        </div>
+        <Menu isOpened={isMenuOpened} handleClose={handleMenuClose}></Menu>
+        <Infotooltip
+          isOpened={isInfoTooltipOpened}
+          isAcepted={tooltipStatusAcepted}
+          onClose={handleCloseInfoTooltip}
+          message={tooltipMessage}
+        ></Infotooltip>
       </div>
-      <Menu isOpened={isMenuOpened} handleClose={handleMenuClose}></Menu>
-      <Infotooltip
-        isOpened={isInfoTooltipOpened}
-        isAcepted={false}
-        onClose={handleCloseInfoTooltip}
-      ></Infotooltip>
-    </div>
+    </CurrentUserContext.Provider>
   );
 }
 

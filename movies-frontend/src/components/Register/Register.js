@@ -33,6 +33,7 @@ function Register({ handleRegister }) {
               placeholder={'Имя'}
               type="text"
               name="name"
+              pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+"
               minLength={6}
               maxLength={30}
               required

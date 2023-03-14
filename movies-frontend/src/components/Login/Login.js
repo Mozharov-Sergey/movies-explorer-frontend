@@ -24,7 +24,7 @@ function Login({ handleSignIn }) {
           greating="Рады видеть!"
           isLogin={true}
           onSubmit={handleSubmit}
-          isValid={true}
+          isValid={isValid}
         >
           <div className="sign-form__input-group">
             <label className="sign-form__input-label">{'Email'}</label>
