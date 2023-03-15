@@ -26,6 +26,14 @@ function App() {
   const [tooltipMessage, setTooltipMessage] = React.useState('');
   const [tooltipStatusAcepted, setTooltipStatusAcepted] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
+  const [startMovies, setStartMovies] = React.useState({});
+  const [startSavedMovies, setStartSavedMovies] = React.useState({});
+  
+  
+
+  // function getfmovies() {
+  //   return fmovies;
+  // }
 
   // На страницах регистрации и авторизации шапка не показывается.
   // Этот хук отвечает за показ шапки на этих страницах
@@ -174,15 +182,19 @@ function App() {
               component={Movies}
               path="/movies/"
               isLoggedIn={isLoggedIn}
-              handleMenuOpen={handleMenuOpen}
+              // handleMenuOpen={handleMenuOpen}
               onEmptyInput={handleEmptySearchRequest}
+              handleSetStartMovies={setStartMovies}
+              movies={startMovies}
             />
             <ProtectedRoute
               component={SavedMovies}
               path="/saved-movies/"
               isLoggedIn={isLoggedIn}
-              handleMenuOpen={handleMenuOpen}
+              // handleMenuOpen={handleMenuOpen}
               onEmptyInput={handleEmptySearchRequest}
+              handleSetStartMovies={setStartSavedMovies}
+              movies={startSavedMovies}
             />
             <ProtectedRoute
               component={Profile}

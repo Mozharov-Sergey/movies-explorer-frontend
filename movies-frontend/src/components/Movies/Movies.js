@@ -6,15 +6,29 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader/Preloader';
 import { findFilmsLocal } from '../../utils/Utils';
 
-function Movies({ onEmptyInput }) {
+function Movies({ onEmptyInput, handleSetStartMovies, movies }) {
   const [filteredMoviesList, setFilteredMoviesList] = React.useState({});
   const [clampShortFilms, setClampShortFilms] = React.useState(true);
   const [showPreloader, setShowPreloader] = React.useState(false);
   const [emptySearchResult, setEmptySearchResult] = React.useState(false);
   const [searchFailed, setSearchFailed] = React.useState(false);
+  let lastRequest = sessionStorage.getItem('moviesLastRequest');
 
+  // Проверяем, записаны ли в LocalStorage данные о предыдущей загрузке
   React.useEffect(() => {
     setStarterFilms();
+    let shorts = sessionStorage.getItem('ShortFilms');
+    if (shorts === 'false' || shorts === null) {
+      setClampShortFilms(true);
+      console.log('clamp');
+    } else {
+      setClampShortFilms(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    let a = localStorage.getItem('filteredFilms');
+    console.log(a);
   }, []);
 
   function findFilmsLocal({ request, films, clampShortFilms }) {
@@ -38,18 +52,17 @@ function Movies({ onEmptyInput }) {
     if (filteredFilms.length === 0) {
       setEmptySearchResult(true);
     }
+
+    handleSetStartMovies(filteredFilms);
   }
 
   function setStarterFilms() {
-    const lastRequest = sessionStorage.getItem('lastRequest');
-    let films = JSON.parse(localStorage.getItem('films'));
-
-    if (lastRequest) {
-      findFilmsLocal({ request: lastRequest, films, clampShortFilms });
+    if(movies) {
+      setFilteredMoviesList(movies);
     }
   }
 
-  function handleClampShortFilms() {
+  function handleClampShortFilms(isChecked) {
     setClampShortFilms(!clampShortFilms);
   }
 
@@ -67,8 +80,8 @@ function Movies({ onEmptyInput }) {
     setSearchFailed(false);
 
     // Параметры поиска храним в сессионном хранилище
-    sessionStorage.setItem('lastRequest', request);
-    sessionStorage.setItem('clampShortFilms', clampShortFilms);
+    sessionStorage.setItem('moviesLastRequest', request);
+    sessionStorage.setItem('ShortFilms', !clampShortFilms);
 
     // Если первый раз обращаемся к странице, то подгружаем фильмы через
     // функцию get films. Она же сохранит их в localStorage и в последующие
@@ -114,18 +127,21 @@ function Movies({ onEmptyInput }) {
     } else {
       findFilmsLocal({ request, films, clampShortFilms });
     }
+
+    
   }
 
   return (
     <div className="movies">
       <SearchForm
-        onClampShorts={handleClampShortFilms}
+        onClampShortFilms={handleClampShortFilms}
         onSubmit={SearchFilms}
         setShowPreloader={setShowPreloader}
         emptySearchResult={emptySearchResult}
         searchFailed={searchFailed}
         isShortFilmsClamped={clampShortFilms}
         onEmptyInput={onEmptyInput}
+        lastRequest={lastRequest}
       ></SearchForm>
       {showPreloader && <Preloader></Preloader>}
       <MoviesCardList moviesList={filteredMoviesList} />

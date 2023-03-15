@@ -1,20 +1,11 @@
 import React from 'react';
 
-function Checkbox({ handleClick, startPosition }) {
-
-  const toggler = document.getElementById('toggler');
- 
-
-  function setStartPosition() {
-    if (!startPosition) {
-      toggler.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-    }
-  }
+function Checkbox({ handleClick, isChecked }) {
 
   return (
     <label className="switch">
-      <input type="checkbox"></input>
-      <span className="slider round" onClick={handleClick} id="toggler"></span>
+      <input type="checkbox" checked={isChecked} onChange={handleClick}></input>
+      <span className="slider round" id="toggler"></span>
     </label>
   );
 }

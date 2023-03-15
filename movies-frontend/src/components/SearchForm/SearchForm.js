@@ -1,26 +1,20 @@
 import Switch from '../Switch/Switch';
 import React from 'react';
 
-import Infotooltip from '../InfoTooltip/InfoTooltip';
-
 function SearchForm({
   onSubmit,
   onEmptyInput,
   setShowPreloader,
   emptySearchResult,
   searchFailed,
-  onClampShorts,
+  onClampShortFilms,
   isShortFilmsClamped,
+  lastRequest
 }) {
   const [input, setInput] = React.useState('');
   const [isEmptyRequest, setIsEmptyRequest] = React.useState(false);
-  const [request, setRequest] = React.useState(sessionStorage.getItem('lastRequest')); // Записиывается при событии Submit
-  const [isShortFilmsClampeded, setIsShortFilmsClampeded] = React.useState(
-    sessionStorage.getItem('clampShortFilms')
-  ); // НУЖНО БУДЕТ СДЕЛАТЬ НА ОСНОВЕ ЭТОЙ  СОСТОЯНИЕ ТУМБЛЕРА
-  const [isInfoTooltipOpened, setIsInfoTooltipOpened] = React.useState(false);
-  const [tooltipMessage, setTooltipMessage] = React.useState('');
-  const [tooltipStatusAcepted, setTooltipStatusAcepted] = React.useState(false);
+  // const [request, setRequest] = React.useState(sessionStorage.getItem('lastRequest')); // Записиывается при событии Submit
+  const [request, setRequest] = React.useState(lastRequest);
 
   React.useEffect(() => {
     if (input === '') {
@@ -33,8 +27,8 @@ function SearchForm({
   React.useEffect(() => {
     setIsEmptyRequest(false);
     setInput(request);
+    // setIsShortFilmsClampeded(isShortFilmsClamped);
   }, []);
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -49,10 +43,6 @@ function SearchForm({
     } else {
       setIsEmptyRequest(true);
     }
-  }
-
-  function closeTooltip() {
-    setIsInfoTooltipOpened(false);
   }
 
   function handleChange(e) {
@@ -79,7 +69,7 @@ function SearchForm({
             <span className="search-form__input-error-message">Ошибка: Нужно ввести ключевое слово</span>
           )}
           <div className="search-form__switch">
-            <Switch handleClick={onClampShorts} startPosition={isShortFilmsClamped}></Switch>
+            <Switch handleClick={onClampShortFilms} isChecked={!isShortFilmsClamped}></Switch>
             <label className="search-form__switch-label">Короткометражки</label>
           </div>
           <div className="search-form__br"></div>
