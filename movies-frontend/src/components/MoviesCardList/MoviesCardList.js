@@ -78,7 +78,7 @@ function MoviesCardList({ moviesList, isSaved }) {
             }
 
             return (
-              <li className="card-list__item" key={item.id}>
+              <li className="card-list__item" key={item._id}>
                 <MoviesCard movie={item} />
               </li>
             );

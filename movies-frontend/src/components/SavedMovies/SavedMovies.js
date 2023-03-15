@@ -7,27 +7,35 @@ import Preloader from '../Preloader/Preloader/Preloader';
 
 function SavedMovies({ onEmptyInput, handleSetStartMovies, movies }) {
   const [savedMoviesList, setSavedMoviesList] = React.useState([]);
+  const [filteredMoviesList, setFilteredMoviesList] = React.useState({});
+  const [startMoviesList, setStartMoviesList] = React.useState([]);
   const [clampShortFilms, setClampShortFilms] = React.useState(true);
   const [emptySearchResult, setEmptySearchResult] = React.useState(false);
   const [searchFailed, setSearchFailed] = React.useState(false);
   const [showPreloader, setShowPreloader] = React.useState(false);
-  const [filteredMoviesList, setFilteredMoviesList] = React.useState({});
+  const [isReloaded, setIsReloaded] = React.useState(Boolean(Object.keys(movies).length));
+
   const [isFiltered, setisFiltered] = React.useState(false);
   let lastRequest = sessionStorage.getItem('savedMoviesLastRequest');
 
   React.useEffect(() => {
-    moviesApi.getSavedFilms().then((res) => setSavedMoviesList(res));
+    moviesApi
+      .getSavedFilms()
+      .then((res) => setSavedMoviesList(res))
+      .then((res) => {
+        if (Object.keys(movies).length > 0) {
+          setStartMoviesList(movies);
+        }
+      })
+      .catch((err) => console.log(err));
 
-    if(movies) {
-      
+    let shorts = sessionStorage.getItem('savedMoviesShort');
+    if (shorts === 'false' || shorts === null) {
+      setClampShortFilms(true);
+    } else {
+      setClampShortFilms(false);
     }
   }, []);
-
-  function handleSetStartMovies() {
-    if(movies) {
-      setFilteredMoviesList(movies);
-    }
-  }
 
   function handleClampShortFilms() {
     setClampShortFilms(!clampShortFilms);
@@ -54,10 +62,13 @@ function SavedMovies({ onEmptyInput, handleSetStartMovies, movies }) {
     if (filteredFilms.length === 0) {
       setEmptySearchResult(true);
     }
+
+    handleSetStartMovies(filteredFilms);
   }
 
   function SearchFilms(request) {
     sessionStorage.setItem('savedMoviesLastRequest', request);
+    sessionStorage.setItem('savedMoviesShort', !clampShortFilms);
     setEmptySearchResult(false);
     setSearchFailed(false);
     findFilmsLocal({ request, films: savedMoviesList, clampShortFilms });
@@ -71,7 +82,7 @@ function SavedMovies({ onEmptyInput, handleSetStartMovies, movies }) {
     <>
       <div className="saved-movies">
         <SearchForm
-          onClampShorts={handleClampShortFilms}
+          onClampShortFilms={handleClampShortFilms}
           onSubmit={SearchFilms}
           setShowPreloader={setShowPreloader}
           emptySearchResult={emptySearchResult}
@@ -81,8 +92,10 @@ function SavedMovies({ onEmptyInput, handleSetStartMovies, movies }) {
           lastRequest={lastRequest}
         ></SearchForm>
         {showPreloader && <Preloader></Preloader>}
-        {!isFiltered && <MoviesCardList moviesList={savedMoviesList} isSaved={true}></MoviesCardList>}
-        {isFiltered && <MoviesCardList moviesList={filteredMoviesList} isSaved={true}></MoviesCardList>}
+
+        {!isFiltered && isReloaded && <MoviesCardList moviesList={startMoviesList} isSaved={true} />}
+        {!isFiltered && !isReloaded && <MoviesCardList moviesList={savedMoviesList} isSaved={true} />}
+        {isFiltered && <MoviesCardList moviesList={filteredMoviesList} isSaved={true} />}
       </div>
     </>
   );

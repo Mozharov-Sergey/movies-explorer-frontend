@@ -17,18 +17,12 @@ function Movies({ onEmptyInput, handleSetStartMovies, movies }) {
   // Проверяем, записаны ли в LocalStorage данные о предыдущей загрузке
   React.useEffect(() => {
     setStarterFilms();
-    let shorts = sessionStorage.getItem('ShortFilms');
+    let shorts = sessionStorage.getItem('moviesShort');
     if (shorts === 'false' || shorts === null) {
       setClampShortFilms(true);
-      console.log('clamp');
     } else {
       setClampShortFilms(false);
     }
-  }, []);
-
-  React.useEffect(() => {
-    let a = localStorage.getItem('filteredFilms');
-    console.log(a);
   }, []);
 
   function findFilmsLocal({ request, films, clampShortFilms }) {
@@ -57,12 +51,12 @@ function Movies({ onEmptyInput, handleSetStartMovies, movies }) {
   }
 
   function setStarterFilms() {
-    if(movies) {
+    if (movies) {
       setFilteredMoviesList(movies);
     }
   }
 
-  function handleClampShortFilms(isChecked) {
+  function handleClampShortFilms() {
     setClampShortFilms(!clampShortFilms);
   }
 
@@ -81,7 +75,7 @@ function Movies({ onEmptyInput, handleSetStartMovies, movies }) {
 
     // Параметры поиска храним в сессионном хранилище
     sessionStorage.setItem('moviesLastRequest', request);
-    sessionStorage.setItem('ShortFilms', !clampShortFilms);
+    sessionStorage.setItem('moviesShort', !clampShortFilms);
 
     // Если первый раз обращаемся к странице, то подгружаем фильмы через
     // функцию get films. Она же сохранит их в localStorage и в последующие
@@ -127,8 +121,6 @@ function Movies({ onEmptyInput, handleSetStartMovies, movies }) {
     } else {
       findFilmsLocal({ request, films, clampShortFilms });
     }
-
-    
   }
 
   return (
