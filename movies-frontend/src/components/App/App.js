@@ -26,14 +26,24 @@ function App() {
   const [tooltipMessage, setTooltipMessage] = React.useState('');
   const [tooltipStatusAcepted, setTooltipStatusAcepted] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-  const [startMovies, setStartMovies] = React.useState({});
-  const [startSavedMovies, setStartSavedMovies] = React.useState({});
-  
-  
 
-  // function getfmovies() {
-  //   return fmovies;
-  // }
+  //Movies
+  const [startMovies, setStartMovies] = React.useState({});
+  const [moviesTogglerPosition, setMoviesTogglerPosition] = React.useState(true);
+  const [moviesLastRequest, setMoviesLastRequest] = React.useState('');
+
+  //SavedMovies
+  const [startSavedMovies, setStartSavedMovies] = React.useState({});
+  const [savedMoviesTogglerPosition, setSavedMoviesTogglerPosition] = React.useState(true);
+  const [savedMoviesLastRequest, setSavedMoviesLastRequest] = React.useState('');
+
+  function handleChangeMoviesTogglerPosition() {
+    setMoviesTogglerPosition(!moviesTogglerPosition);
+  }
+
+  function handleChangeSavedMoviesTogglerPosition() {
+    setSavedMoviesTogglerPosition(!savedMoviesTogglerPosition);
+  }
 
   // На страницах регистрации и авторизации шапка не показывается.
   // Этот хук отвечает за показ шапки на этих страницах
@@ -57,6 +67,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
+    // localStorage.clear();
   }, []);
 
   React.useEffect(() => {
@@ -182,19 +193,25 @@ function App() {
               component={Movies}
               path="/movies/"
               isLoggedIn={isLoggedIn}
-              // handleMenuOpen={handleMenuOpen}
               onEmptyInput={handleEmptySearchRequest}
-              handleSetStartMovies={setStartMovies}
               movies={startMovies}
+              handleSetStartMovies={setStartMovies}
+              handleSetToggler={handleChangeMoviesTogglerPosition}
+              isClamped={moviesTogglerPosition}
+              lastRequest={moviesLastRequest}
+              setLastRequest={setMoviesLastRequest}
             />
             <ProtectedRoute
               component={SavedMovies}
               path="/saved-movies/"
               isLoggedIn={isLoggedIn}
-              // handleMenuOpen={handleMenuOpen}
               onEmptyInput={handleEmptySearchRequest}
-              handleSetStartMovies={setStartSavedMovies}
               movies={startSavedMovies}
+              handleSetStartMovies={setStartSavedMovies}
+              handleSetToggler={handleChangeSavedMoviesTogglerPosition}
+              isClamped={savedMoviesTogglerPosition}
+              lastRequest={savedMoviesLastRequest}
+              setLastRequest={setSavedMoviesLastRequest}
             />
             <ProtectedRoute
               component={Profile}

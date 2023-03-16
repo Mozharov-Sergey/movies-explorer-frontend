@@ -13,7 +13,6 @@ function SearchForm({
 }) {
   const [input, setInput] = React.useState('');
   const [isEmptyRequest, setIsEmptyRequest] = React.useState(false);
-  // const [request, setRequest] = React.useState(sessionStorage.getItem('lastRequest')); // Записиывается при событии Submit
   const [request, setRequest] = React.useState(lastRequest);
 
   React.useEffect(() => {
@@ -27,7 +26,6 @@ function SearchForm({
   React.useEffect(() => {
     setIsEmptyRequest(false);
     setInput(request);
-    // setIsShortFilmsClampeded(isShortFilmsClamped);
   }, []);
 
   function handleSubmit(e) {
