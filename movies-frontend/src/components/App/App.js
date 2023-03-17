@@ -88,16 +88,18 @@ function App() {
   }
 
   function handleRegister(email, password, name) {
+    
     authApi
       .signup(email, password, name)
       .then((res) => {
         if (res) {
+          setCurrentUser({ email: email, name: name });
           setTooltipMessage('Вы успешно зарегистрированы!');
-          openSucessNotification();
+          openSucessNotification();       
         }
       })
-      .then(() => {
-        authApi.signin(email, password).then((res) => {
+      .then((res) => {
+        handleSignIn(email, password).then((res) => {
           localStorage.setItem('token', res.token);
           setIsLoggedIn(true);
         });
@@ -108,7 +110,7 @@ function App() {
   }
 
   function handleSignIn(email, password) {
-    authApi
+    return authApi
       .signin(email, password)
       .then((res) => {
         localStorage.setItem('token', res.token);
