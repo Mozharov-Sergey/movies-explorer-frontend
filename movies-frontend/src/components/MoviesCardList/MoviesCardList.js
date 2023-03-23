@@ -1,9 +1,8 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 import useResize from 'use-resize';
 import React from 'react';
-import moviesApi from '../../utils/MoviesApi';
 
-function MoviesCardList({ moviesList, isSaved }) {
+function MoviesCardList({ moviesList, isSaved, likes }) {
   const size = useResize();
   const [showMoreButton, setShowMoreButton] = React.useState(false);
   const [pointer, setPointer] = React.useState(0);
@@ -18,6 +17,7 @@ function MoviesCardList({ moviesList, isSaved }) {
   }, [showList]);
 
   function showInitialCards() {
+    setShowList([]);
     let startSplitPosition = 0;
     if (size.width > 980) {
       startSplitPosition = 16;
@@ -72,13 +72,20 @@ function MoviesCardList({ moviesList, isSaved }) {
     <>
       {Object.keys(moviesList).length !== 0 && (
         <ul className="card-list">
-          {showList.map((item) => {
+          {showList.map((item, index) => {
             if (isSaved) {
               item.isSaved = true;
+              item.isLiked = true;
+            } 
+            
+            else if (likes) {
+              if (likes.includes(item.id)) {
+                item.isLiked = true; 
+              }
             }
 
             return (
-              <li className="card-list__item" key={item._id}>
+              <li className="card-list__item" key={index}>
                 <MoviesCard movie={item} />
               </li>
             );

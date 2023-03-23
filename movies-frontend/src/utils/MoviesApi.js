@@ -76,21 +76,6 @@ class MoviesApi {
       .then((res) => this._checkResponse(res));
   }
 
-  remove(item) {
-    const token = localStorage.getItem('token');
-    return fetch(`${this._userUrl}/movies/${item}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        return res;
-      })
-      .then((res) => this._checkResponse(res));
-  }
 }
 
 const moviesApi = new MoviesApi(ApiOptions);

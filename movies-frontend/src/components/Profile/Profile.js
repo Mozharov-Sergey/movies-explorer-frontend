@@ -1,18 +1,23 @@
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import React from 'react';
 import { CurrentUserContext } from '../../contexts/currentUserContext';
-import authApi from '../../utils/Auth';
 
-function Profile({ onLogout, onSubmitUpdate }) {
+function Profile({ onLogout, onSubmitUpdate, onCaseNoChanges }) {
   const { values, handleChange, errors, isValid, setValues, resetForm, setIsValid } = useFormAndValidation();
   const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
     setValues({ name: currentUser.name, email: currentUser.email });
+    // setIsValid(false); // На тот случай, если по дефолту кнопка должна быть заблокирована
   }, []);
 
   function handleEditUserData() {
-    onSubmitUpdate({ email: values.email, name: values.name });
+    if(currentUser.name !== values.name || currentUser.email !== values.email) {
+      onSubmitUpdate({ email: values.email, name: values.name });
+    }
+    else {
+      onCaseNoChanges('Необходимо изменить хотя бы одно поле')
+    }
   }
 
   return (
@@ -51,7 +56,6 @@ function Profile({ onLogout, onSubmitUpdate }) {
         </div>
 
         <div className="profile__controllers">
-          {/* <p className="profile__edit" onClick={handleEditUserData}> */}
           <p className={`profile__edit ${!isValid && 'profile__edit_disabled'}`} disabled={!isValid} onClick={handleEditUserData}>
             Редактировать
           </p>

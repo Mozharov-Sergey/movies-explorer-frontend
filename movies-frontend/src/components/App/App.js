@@ -27,19 +27,10 @@ function App() {
   const [tooltipStatusAcepted, setTooltipStatusAcepted] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
 
-  //Movies
-  const [startMovies, setStartMovies] = React.useState({});
-  const [moviesTogglerPosition, setMoviesTogglerPosition] = React.useState(true);
-  const [moviesLastRequest, setMoviesLastRequest] = React.useState('');
-
   //SavedMovies
   const [startSavedMovies, setStartSavedMovies] = React.useState({});
   const [savedMoviesTogglerPosition, setSavedMoviesTogglerPosition] = React.useState(true);
   const [savedMoviesLastRequest, setSavedMoviesLastRequest] = React.useState('');
-
-  function handleChangeMoviesTogglerPosition() {
-    setMoviesTogglerPosition(!moviesTogglerPosition);
-  }
 
   function handleChangeSavedMoviesTogglerPosition() {
     setSavedMoviesTogglerPosition(!savedMoviesTogglerPosition);
@@ -48,6 +39,7 @@ function App() {
   // На страницах регистрации и авторизации шапка не показывается.
   // Этот хук отвечает за показ шапки на этих страницах
   React.useEffect(() => {
+
     if (location.pathname === '/signup' || location.pathname === '/signin') {
       setIsHeaderShow(false);
     } else {
@@ -83,19 +75,18 @@ function App() {
         localStorage.setItem('userName', res.name);
         localStorage.setItem('userEmail', res.email);
         setCurrentUser({ email: res.email, name: res.name });
+        openSucessNotification('Информация о пользователе успешно обновлена');
       })
       .catch((err) => console.log(err));
   }
 
   function handleRegister(email, password, name) {
-    
     authApi
       .signup(email, password, name)
       .then((res) => {
         if (res) {
           setCurrentUser({ email: email, name: name });
-          setTooltipMessage('Вы успешно зарегистрированы!');
-          openSucessNotification();       
+          openSucessNotification('Вы успешно зарегистрированы!');
         }
       })
       .then((res) => {
@@ -107,6 +98,18 @@ function App() {
       .catch((err) => {
         openErrorNotification(err.validation.body.message || err.error);
       });
+  }
+
+  function openSucessNotification(message) {
+    setIsInfoTooltipOpened(true);
+    setTooltipStatusAcepted(true);
+    setTooltipMessage(message);
+  }
+
+  function openErrorNotification(message) {
+    setTooltipStatusAcepted(false);
+    setIsInfoTooltipOpened(true);
+    setTooltipMessage(message);
   }
 
   function handleSignIn(email, password) {
@@ -136,27 +139,12 @@ function App() {
     }
   }
 
-  function openErrorNotification(message) {
-    setTooltipMessage(message);
-    setTooltipStatusAcepted(false);
-    setIsInfoTooltipOpened(true);
-  }
-
-  function openSucessNotification() {
-    setIsInfoTooltipOpened(true);
-    setTooltipStatusAcepted(true);
-  }
-
   function handleMenuClose() {
     setIsMenuOpened(false);
   }
 
   function handleMenuOpen() {
     setIsMenuOpened(true);
-  }
-
-  function handleOpenTooltip() {
-    setIsInfoTooltipOpened(true);
   }
 
   function handleCloseInfoTooltip() {
@@ -167,13 +155,17 @@ function App() {
   function handleEmptySearchRequest() {
     setIsInfoTooltipOpened(false);
     setTooltipMessage('Введите поисковый запрос');
-    handleOpenTooltip();
+    setIsInfoTooltipOpened(true);
   }
 
   function logOut() {
-    localStorage.removeItem('token');
-    history.push('/');
+    // Очищаем стейт переменные
     setIsLoggedIn(false);
+    setCurrentUser({});
+    setSavedMoviesTogglerPosition(true);
+    setSavedMoviesLastRequest('');
+    localStorage.clear();
+    history.push('/');
   }
 
   return (
@@ -192,20 +184,19 @@ function App() {
             </Route>
 
             <ProtectedRoute
-              component={Movies}
-              path="/movies/"
+              component={Profile}
+              path="/profile/"
+              exact
               isLoggedIn={isLoggedIn}
-              onEmptyInput={handleEmptySearchRequest}
-              movies={startMovies}
-              handleSetStartMovies={setStartMovies}
-              handleSetToggler={handleChangeMoviesTogglerPosition}
-              isClamped={moviesTogglerPosition}
-              lastRequest={moviesLastRequest}
-              setLastRequest={setMoviesLastRequest}
+              onLogout={logOut}
+              onSubmitUpdate={handleUpdateUserData}
+              onCaseNoChanges={openErrorNotification}
             />
+
             <ProtectedRoute
               component={SavedMovies}
               path="/saved-movies/"
+              exact
               isLoggedIn={isLoggedIn}
               onEmptyInput={handleEmptySearchRequest}
               movies={startSavedMovies}
@@ -215,22 +206,24 @@ function App() {
               lastRequest={savedMoviesLastRequest}
               setLastRequest={setSavedMoviesLastRequest}
             />
+
             <ProtectedRoute
-              component={Profile}
-              path="/profile/"
+              component={Movies}
+              path="/movies/"
+              exact
               isLoggedIn={isLoggedIn}
-              onLogout={logOut}
-              onSubmitUpdate={handleUpdateUserData}
+              onEmptyInput={handleEmptySearchRequest}
             />
 
             <Route exact path="/">
               <Main isLoggedIn={isLoggedIn} />
             </Route>
 
-            <Route exact path="*">
+            <Route path="*">
               <NotFound />
             </Route>
           </Switch>
+
           <Footer></Footer>
         </div>
         <Menu isOpened={isMenuOpened} handleClose={handleMenuClose}></Menu>

@@ -5,26 +5,13 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import moviesApi from '../../utils/MoviesApi';
 import Preloader from '../Preloader/Preloader/Preloader';
 
-function SavedMovies({
-  onEmptyInput,
-  handleSetStartMovies,
-  movies,
-  handleSetToggler,
-  isClamped,
-  lastRequest,
-  setLastRequest,
-}) {
+function SavedMovies({ onEmptyInput, handleSetStartMovies, movies, handleSetToggler }) {
   const [savedMoviesList, setSavedMoviesList] = React.useState({});
   const [showMoviesList, setShowMoviesList] = React.useState({});
-  const [filteredMoviesList, setFilteredMoviesList] = React.useState({});
-  const [startMoviesList, setStartMoviesList] = React.useState({});
-  const [clampShortFilms, setClampShortFilms] = React.useState(true);
   const [emptySearchResult, setEmptySearchResult] = React.useState(false);
   const [searchFailed, setSearchFailed] = React.useState(false);
   const [showPreloader, setShowPreloader] = React.useState(false);
-  const [isReloaded, setIsReloaded] = React.useState(Boolean(Object.keys(movies).length));
-  const [isFiltered, setisFiltered] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isShorts, setIsShorts] = React.useState(handleSetToggler());
 
   React.useEffect(() => {
     if (Object.keys(movies).length === 0) {
@@ -47,38 +34,61 @@ function SavedMovies({
     }
   }
 
-  function findFilmsLocal({ request, films }) {
-    if (Object.keys(films).length === 0) {
-      setEmptySearchResult(true);
-      setShowPreloader(false);
-      return;
-    }
+  function findFilmsLocal(request) {
+    let films = savedMoviesList;
+
+    // if (!request) {
+    //   setShowPreloader(false);
+    //   onEmptyInput();
+    //   return;
+    // }
 
     let filteredFilms = films.filter((movie) => {
       return movie.nameRU.toLowerCase().includes(request.toLowerCase());
     });
 
-    if (isClamped) {
+    if (isShorts) {
       filteredFilms = filteredFilms.filter((movie) => {
-        return movie.duration > 40;
+        return movie.duration < 40;
       });
     }
+
     setShowMoviesList(filteredFilms);
     setShowPreloader(false);
 
     if (filteredFilms.length === 0) {
+      setShowMoviesList({});
       setEmptySearchResult(true);
     }
-
-    handleSetStartMovies(filteredFilms);
   }
 
   function SearchFilms(request) {
-    setLastRequest(request);
     setEmptySearchResult(false);
     setSearchFailed(false);
-    findFilmsLocal({ request, films: savedMoviesList });
-    setisFiltered(true);
+    findFilmsLocal(request);
+  }
+
+  function handleSetToggler() {
+    let pos = localStorage.getItem('isSavedShorts');
+    if (pos === null || pos === 'false') {
+      return false;
+    } else {
+      localStorage.setItem('isSavedShorts', 'true');
+      return true;
+    }
+  }
+
+  // Сохраняем значение тумблера
+  function handleSwitchShorts() {
+    if (isShorts) {
+      localStorage.removeItem('isSavedShorts');
+      setIsShorts(false);
+    }
+
+    if (!isShorts) {
+      localStorage.setItem('isSavedShorts', 'true');
+      setIsShorts(true);
+    }
   }
 
   return (
@@ -88,14 +98,13 @@ function SavedMovies({
     <>
       <div className="saved-movies">
         <SearchForm
-          onClampShortFilms={handleSetToggler}
+          onShortsFiltered={handleSwitchShorts}
+          isShorts={isShorts}
           onSubmit={SearchFilms}
           setShowPreloader={setShowPreloader}
           emptySearchResult={emptySearchResult}
           searchFailed={searchFailed}
-          isShortFilmsClamped={isClamped}
           onEmptyInput={onEmptyInput}
-          lastRequest={lastRequest}
         ></SearchForm>
         {showPreloader && <Preloader></Preloader>}
         <MoviesCardList moviesList={showMoviesList} isSaved={true} />

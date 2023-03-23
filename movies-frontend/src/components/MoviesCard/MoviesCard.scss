@@ -63,6 +63,17 @@
       background-image: url('../../images/icons/like_active.svg');
     }
   }
+
+  &__delete {
+    background-image: url('../../images/icons/card-delete-button.svg');
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: -7px 0 auto 0;
+    border: none;
+    background-color: transparent;
+  }
 }
 
 @media (max-width: 980px) {

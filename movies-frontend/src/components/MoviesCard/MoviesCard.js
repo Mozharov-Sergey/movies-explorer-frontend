@@ -4,26 +4,21 @@ import React from 'react';
 import moviesApi from '../../utils/MoviesApi';
 
 function MoviesCard({ movie }) {
-  const [isLiked, setIsLiked] = React.useState(movie.isLiked || movie.isSaved);
+  const [isLiked, setIsLiked] = React.useState(movie.isLiked);
+  const [isSaved, setIsSaved] = React.useState(movie.isSaved);
   const [posterImage, setPosterImage] = React.useState('');
-  const [id, setId] = React.useState(movie.id || movie.movieId); // С моего api id приходит в поле movieId, c ЯП в полке id. Здесь приводим к общему знаменателю длдя дальнейшего использования в лайках
   const [formatedDuration, setFormatedDuratiion] = React.useState('');
-  const [idOnUserServer, setIdOnUserServer] = React.useState('');
 
   React.useEffect(() => {
     posterProtector();
     formatDuration();
-  }, []);
-
-  React.useEffect(() => {
-    const like = localStorage.getItem(`${id}`);
-    if (like) {
-      setIsLiked(true);
-    } else {
-      setIsLiked(false);
-    }
   });
 
+  React.useEffect(() => {
+    if (movie.isLiked) {
+      setIsLiked(true);
+    }
+  });
 
   function posterProtector() {
     if (movie.isSaved) {
@@ -48,25 +43,25 @@ function MoviesCard({ movie }) {
   }
 
   function handleLikeClick() {
-    if (isLiked) {
+    if (!isSaved && !isLiked) {
+      moviesApi.addToSavedMovies(movie).then((res) => {
+        movie._id = res.createdMovie._id;
+        setIsLiked(true);
+      });
+    }
+  }
+
+  function handleRemoveCard() {
+    if (isSaved || isLiked) {
+      setIsSaved(false);
       setIsLiked(false);
-      const _id = localStorage.getItem(`${id}`);
-      moviesApi.removeFromSavedMovies(movie).then(localStorage.removeItem(`${id}`));
-    } else {
-      const isAllreadyAdded = localStorage.getItem(`${id}`);
-      if (!isAllreadyAdded) {
-        moviesApi.addToSavedMovies(movie).then((res) => {
-          localStorage.setItem(`${id}`, 'liked');
-          movie._id = res.createdMovie._id;
-          setIsLiked(true);
-        });
-      }
+      moviesApi.removeFromSavedMovies(movie);
     }
   }
 
   return (
     <>
-      {!movie.isSaved && (
+      {!isSaved && !movie.isSaved && (
         <div className="movies-card">
           <a href={movie.trailerLink} target="_blank">
             <img className="movies-card__image" src={posterImage} alt={movie.image.alternativeText}></img>
@@ -83,17 +78,14 @@ function MoviesCard({ movie }) {
         </div>
       )}
 
-      {movie.isSaved && isLiked && (
+      {isSaved && (
         <div className="movies-card">
           <a href={movie.trailerLink} target="_blank">
             <img className="movies-card__image" src={posterImage} alt={movie.image.alternativeText}></img>
           </a>
           <div className="movies-card__info">
             <p className="movies-card__title">{movie.nameRU}</p>
-            <button
-              className={`movies-card__like ${isLiked && 'movies-card__like_active'}`}
-              onClick={handleLikeClick}
-            ></button>
+            <button className="movies-card__delete" onClick={handleRemoveCard}></button>
           </div>
           <div className="movies-card__hr"></div>
           <p className="movies-card__duration">{formatedDuration}</p>
@@ -104,4 +96,3 @@ function MoviesCard({ movie }) {
 }
 
 export default MoviesCard;
- 

@@ -1,7 +1,6 @@
 import React from 'react';
 import SignForm from '../SignForm/SignForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
-import { Link } from 'react-router-dom';
 import RegLog from '../RegLog/RegLog';
 
 function Login({ handleSignIn }) {
@@ -31,12 +30,12 @@ function Login({ handleSignIn }) {
             <input
               className="sign-form__input"
               placeholder={'Email'}
-              type="email"
               name="email"
               required
               value={values.email || ''}
               onChange={handleChange}
             ></input>
+            {errors.email && <p className="sign-form__error-message">{errors.email}</p>}
           </div>
 
           <div className="sign-form__input-group">
@@ -52,6 +51,7 @@ function Login({ handleSignIn }) {
               value={values.password || ''}
               onChange={handleChange}
             ></input>
+            {errors.password && <p className="sign-form__error-message">{errors.password}</p>}
           </div>
         </SignForm>
 

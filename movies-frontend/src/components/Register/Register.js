@@ -1,9 +1,7 @@
 import React from 'react';
 import RegLog from '../RegLog/RegLog';
-
 import SignForm from '../SignForm/SignForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
-import { Link } from 'react-router-dom';
 
 function Register({ handleRegister }) {
   const { values, handleChange, errors, isValid, setValues, resetForm, setIsValid } = useFormAndValidation();
@@ -48,7 +46,7 @@ function Register({ handleRegister }) {
             <input
               className={'sign-form__input ' + (errors.email && 'sign-form__input_error')}
               placeholder={'Email'}
-              type="email"
+              // type="email"
               name="email"
               required
               value={values.email || ''}

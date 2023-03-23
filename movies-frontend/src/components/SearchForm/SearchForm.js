@@ -1,4 +1,4 @@
-import Switch from '../Switch/Switch';
+import Switch from '../Toggler/Toggler';
 import React from 'react';
 
 function SearchForm({
@@ -7,8 +7,8 @@ function SearchForm({
   setShowPreloader,
   emptySearchResult,
   searchFailed,
-  onClampShortFilms,
-  isShortFilmsClamped,
+  onShortsFiltered,
+  isShorts,
   lastRequest
 }) {
   const [input, setInput] = React.useState('');
@@ -30,7 +30,7 @@ function SearchForm({
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (input === null) {
+    if (!input) {
       onEmptyInput();
       return;
     }
@@ -67,7 +67,7 @@ function SearchForm({
             <span className="search-form__input-error-message">Ошибка: Нужно ввести ключевое слово</span>
           )}
           <div className="search-form__switch">
-            <Switch handleClick={onClampShortFilms} isChecked={!isShortFilmsClamped}></Switch>
+            <Switch handleClick={onShortsFiltered} isChecked={isShorts}></Switch>
             <label className="search-form__switch-label">Короткометражки</label>
           </div>
           <div className="search-form__br"></div>

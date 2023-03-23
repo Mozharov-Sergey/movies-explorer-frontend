@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-
 import close from '../../images/icons/close.svg';
 import Account from '../Account/Account';
 import Popup from '../Popup/Popup';
