@@ -96,7 +96,7 @@ function App() {
         });
       })
       .catch((err) => {
-        openErrorNotification(err.validation.body.message || err.error);
+        openErrorNotification(err.error || err.validation.body.message);
       });
   }
 
