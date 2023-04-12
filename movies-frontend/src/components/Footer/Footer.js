@@ -1,10 +1,10 @@
 import { links } from '../../utils/constants';
+import { useLocation } from 'react-router-dom';
 import React from 'react';
 
 function Footer() {
   const [isSizeS, setIsSizeS] = React.useState(false);
-
-  const [year, setYear] = React.useState(0);
+  const thisPath = useLocation();
 
   React.useEffect(() => {
     function handleChangeResize() {
@@ -18,7 +18,7 @@ function Footer() {
     window.addEventListener('resize', handleChangeResize);
   }, []);
 
-  return (
+  return thisPath === '/' || thisPath === '/movies' || thisPath === '/saved-movies' ? (
     <div className="footer">
       <p className="footer__title">Учебный проект Яндекс.Практикум x BeatFilm.</p>
       <div className="footer__hr"></div>
@@ -48,6 +48,8 @@ function Footer() {
         )}
       </div>
     </div>
+  ) : (
+    <></>
   );
 }
 

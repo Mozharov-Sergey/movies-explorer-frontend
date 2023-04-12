@@ -20,7 +20,6 @@ function App() {
   const location = useLocation();
 
   const [isMenuOpened, setIsMenuOpened] = React.useState(false);
-  // const [isHeaderShow, setIsHeaderShow] = React.useState(true);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = React.useState(false);
   const [tooltipMessage, setTooltipMessage] = React.useState('');
@@ -48,12 +47,10 @@ function App() {
     }
   }, [currentUser]);
 
-
   // Сохраняем последнее местоположение
   React.useEffect(() => {
     localStorage.setItem('lastPath', location.pathname);
   }, [location.pathname]);
-
 
   // При перезагрузке страницы возвращаем пользователя в последнее местоположение
   React.useEffect(() => {
@@ -226,10 +223,9 @@ function App() {
 
             <Route path="/*" element={<NotFound />} />
           </Routes>
-
-          <Footer></Footer>
+          <Footer />
         </div>
-        <Menu isOpened={isMenuOpened} handleClose={handleMenuClose}></Menu>
+        <Menu isOpened={isMenuOpened} handleClose={handleMenuClose} />
         <Infotooltip
           isOpened={isInfoTooltipOpened}
           isAcepted={tooltipStatusAcepted}
