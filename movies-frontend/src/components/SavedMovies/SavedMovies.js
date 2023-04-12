@@ -4,6 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import moviesApi from '../../utils/MoviesApi';
 import Preloader from '../Preloader/Preloader/Preloader';
+import { shortFilmDuration } from '../../utils/constants';
 
 function SavedMovies({ onEmptyInput, handleSetStartMovies, movies, handleSetToggler }) {
   const [savedMoviesList, setSavedMoviesList] = React.useState({});
@@ -37,19 +38,13 @@ function SavedMovies({ onEmptyInput, handleSetStartMovies, movies, handleSetTogg
   function findFilmsLocal(request) {
     let films = savedMoviesList;
 
-    // if (!request) {
-    //   setShowPreloader(false);
-    //   onEmptyInput();
-    //   return;
-    // }
-
     let filteredFilms = films.filter((movie) => {
       return movie.nameRU.toLowerCase().includes(request.toLowerCase());
     });
 
     if (isShorts) {
       filteredFilms = filteredFilms.filter((movie) => {
-        return movie.duration < 40;
+        return movie.duration < shortFilmDuration;
       });
     }
 

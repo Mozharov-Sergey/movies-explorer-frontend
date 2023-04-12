@@ -4,6 +4,7 @@ import moviesApi from '../../utils/MoviesApi';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader/Preloader';
+import { shortFilmDuration } from '../../utils/constants';
 
 function Movies({ onEmptyInput }) {
   const [filteredMoviesList, setFilteredMoviesList] = React.useState({});
@@ -83,7 +84,7 @@ function Movies({ onEmptyInput }) {
 
     if (isShorts) {
       filteredFilms = filteredFilms.filter((movie) => {
-        return movie.duration < 40;
+        return movie.duration < shortFilmDuration;
       });
     }
 

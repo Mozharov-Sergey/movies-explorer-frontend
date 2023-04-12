@@ -1,6 +1,7 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 import useResize from 'use-resize';
 import React from 'react';
+import { showCardsStep, startCardsNumber } from '../../utils/constants';
 
 function MoviesCardList({ moviesList, isSaved, likes }) {
   const size = useResize();
@@ -20,13 +21,13 @@ function MoviesCardList({ moviesList, isSaved, likes }) {
     setShowList([]);
     let startSplitPosition = 0;
     if (size.width > 980) {
-      startSplitPosition = 16;
+      startSplitPosition = startCardsNumber.xl;
     } else if (768 < size.width && size.width < 980) {
-      startSplitPosition = 12;
+      startSplitPosition = startCardsNumber.l;
     } else if (500 < size.width && size.width < 768) {
-      startSplitPosition = 8;
+      startSplitPosition = startCardsNumber.m;
     } else {
-      startSplitPosition = 5;
+      startSplitPosition = startCardsNumber.s;
     }
     let list = Array.from(moviesList).splice(0, startSplitPosition);
     list = list.filter(Boolean);
@@ -37,13 +38,13 @@ function MoviesCardList({ moviesList, isSaved, likes }) {
   function showMoreCards(e) {
     let step = 0;
     if (size.width > 980) {
-      step = 4;
+      step = showCardsStep.l;
     } else if (768 < size.width && size.width < 980) {
-      step = 3;
+      step = showCardsStep.m;
     } else if (500 < size.width && size.width < 768) {
-      step = 2;
+      step = showCardsStep.s;
     } else {
-      step = 2;
+      step = showCardsStep.s;
     }
 
     let addCards = Array.from(moviesList).splice(pointer, step);
@@ -54,13 +55,13 @@ function MoviesCardList({ moviesList, isSaved, likes }) {
   function showButton() {
     let step = 0;
     if (size.width > 980) {
-      step = 16;
+      step = startCardsNumber.xl;
     } else if (768 < size.width && size.width < 980) {
-      step = 12;
+      step = startCardsNumber.l;
     } else if (500 < size.width && size.width < 768) {
-      step = 8;
+      step = startCardsNumber.m;
     } else {
-      step = 5;
+      step = startCardsNumber.s;
     }
 
     const isShown = showList.length >= step;
@@ -76,11 +77,9 @@ function MoviesCardList({ moviesList, isSaved, likes }) {
             if (isSaved) {
               item.isSaved = true;
               item.isLiked = true;
-            } 
-            
-            else if (likes) {
+            } else if (likes) {
               if (likes.includes(item.id)) {
-                item.isLiked = true; 
+                item.isLiked = true;
               }
             }
 
