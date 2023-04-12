@@ -39,7 +39,6 @@ function App() {
   // На страницах регистрации и авторизации шапка не показывается.
   // Этот хук отвечает за показ шапки на этих страницах
   React.useEffect(() => {
-
     if (location.pathname === '/signup' || location.pathname === '/signin') {
       setIsHeaderShow(false);
     } else {
@@ -63,10 +62,8 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    if (isLoggedIn) {
-      history.push('/movies');
-    }
-  }, [isLoggedIn]);
+    console.log(isLoggedIn);
+  }); 
 
   function handleUpdateUserData({ email, name }) {
     authApi
@@ -118,6 +115,7 @@ function App() {
       .then((res) => {
         localStorage.setItem('token', res.token);
         setIsLoggedIn(true);
+        history.push('/movies');
       })
       .then((res) =>
         authApi.getUserData().then((userData) => {
@@ -135,7 +133,6 @@ function App() {
     const jwt = localStorage.getItem('token');
     if (jwt) {
       setIsLoggedIn(true);
-      history.push('/movies');
     }
   }
 
@@ -174,15 +171,15 @@ function App() {
         <div className="app">
           {isHeaderShow && <Header isLoggedIn={isLoggedIn} handleMenuOpen={handleMenuOpen}></Header>}
 
+          <Route path="/signup/">
+            <Register handleRegister={handleRegister} />
+          </Route>
+
+          <Route path="/signin/">
+            <Login handleSignIn={handleSignIn} />
+          </Route>
+
           <Switch>
-            <Route path="/signup/">
-              <Register handleRegister={handleRegister} />
-            </Route>
-
-            <Route path="/signin/">
-              <Login handleSignIn={handleSignIn} />
-            </Route>
-
             <ProtectedRoute
               component={Profile}
               path="/profile/"
