@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import authApi from '../../utils/Auth';
 import Main from '../Main/Main';
@@ -16,16 +16,18 @@ import Infotooltip from '../InfoTooltip/InfoTooltip';
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
 function App() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [isMenuOpened, setIsMenuOpened] = React.useState(false);
-  const [isHeaderShow, setIsHeaderShow] = React.useState(true);
+  // const [isHeaderShow, setIsHeaderShow] = React.useState(true);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = React.useState(false);
   const [tooltipMessage, setTooltipMessage] = React.useState('');
   const [tooltipStatusAcepted, setTooltipStatusAcepted] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
+
+  const locations = ['/', '/movies', '/saved-movies', '/profile'];
 
   //SavedMovies
   const [startSavedMovies, setStartSavedMovies] = React.useState({});
@@ -35,16 +37,6 @@ function App() {
   function handleChangeSavedMoviesTogglerPosition() {
     setSavedMoviesTogglerPosition(!savedMoviesTogglerPosition);
   }
-
-  // На страницах регистрации и авторизации шапка не показывается.
-  // Этот хук отвечает за показ шапки на этих страницах
-  React.useEffect(() => {
-    if (location.pathname === '/signup' || location.pathname === '/signin') {
-      setIsHeaderShow(false);
-    } else {
-      setIsHeaderShow(true);
-    }
-  }, [location]);
 
   // Нужно для сохранения информации о пользователе между перезагрузками страницы
   React.useEffect(() => {
@@ -56,14 +48,28 @@ function App() {
     }
   }, [currentUser]);
 
+
+  // Сохраняем последнее местоположение
+  React.useEffect(() => {
+    localStorage.setItem('lastPath', location.pathname);
+  }, [location.pathname]);
+
+
+  // При перезагрузке страницы возвращаем пользователя в последнее местоположение
   React.useEffect(() => {
     tokenCheck();
-    // localStorage.clear();
+    const lastPath = localStorage.getItem('lastPath');
+    if (lastPath) {
+      navigate(lastPath);
+    }
   }, []);
 
-  React.useEffect(() => {
-    console.log(isLoggedIn);
-  }); 
+  function tokenCheck() {
+    const jwt = localStorage.getItem('token');
+    if (jwt) {
+      setIsLoggedIn(true);
+    }
+  }
 
   function handleUpdateUserData({ email, name }) {
     authApi
@@ -115,7 +121,7 @@ function App() {
       .then((res) => {
         localStorage.setItem('token', res.token);
         setIsLoggedIn(true);
-        history.push('/movies');
+        navigate('/movies');
       })
       .then((res) =>
         authApi.getUserData().then((userData) => {
@@ -127,13 +133,6 @@ function App() {
       .catch((err) => {
         openErrorNotification(err.validation.body.message || err.error);
       });
-  }
-
-  function tokenCheck() {
-    const jwt = localStorage.getItem('token');
-    if (jwt) {
-      setIsLoggedIn(true);
-    }
   }
 
   function handleMenuClose() {
@@ -162,64 +161,71 @@ function App() {
     setSavedMoviesTogglerPosition(true);
     setSavedMoviesLastRequest('');
     localStorage.clear();
-    history.push('/');
+    navigate('/');
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="app">
-          {isHeaderShow && <Header isLoggedIn={isLoggedIn} handleMenuOpen={handleMenuOpen}></Header>}
-
-          <Route path="/signup/">
-            <Register handleRegister={handleRegister} />
-          </Route>
-
-          <Route path="/signin/">
-            <Login handleSignIn={handleSignIn} />
-          </Route>
-
-          <Switch>
-            <ProtectedRoute
-              component={Profile}
-              path="/profile/"
-              exact
-              isLoggedIn={isLoggedIn}
-              onLogout={logOut}
-              onSubmitUpdate={handleUpdateUserData}
-              onCaseNoChanges={openErrorNotification}
+          {locations.includes(location.pathname) && (
+            <Header isLoggedIn={isLoggedIn} handleMenuOpen={handleMenuOpen} />
+          )}
+          <Routes>
+            <Route
+              path="/signup"
+              element={
+                isLoggedIn ? <Navigate to="/movies" replace /> : <Register handleRegister={handleRegister} />
+              }
+            />
+            <Route
+              path="/signin"
+              element={isLoggedIn ? <Navigate to="/movies" replace /> : <Login handleSignIn={handleSignIn} />}
             />
 
-            <ProtectedRoute
-              component={SavedMovies}
-              path="/saved-movies/"
-              exact
-              isLoggedIn={isLoggedIn}
-              onEmptyInput={handleEmptySearchRequest}
-              movies={startSavedMovies}
-              handleSetStartMovies={setStartSavedMovies}
-              handleSetToggler={handleChangeSavedMoviesTogglerPosition}
-              isClamped={savedMoviesTogglerPosition}
-              lastRequest={savedMoviesLastRequest}
-              setLastRequest={setSavedMoviesLastRequest}
+            <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
+
+            <Route
+              path="/movies"
+              element={
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <Movies onEmptyInput={handleEmptySearchRequest} />
+                </ProtectedRoute>
+              }
             />
 
-            <ProtectedRoute
-              component={Movies}
-              path="/movies/"
-              exact
-              isLoggedIn={isLoggedIn}
-              onEmptyInput={handleEmptySearchRequest}
+            <Route
+              path="/saved-movies"
+              element={
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <SavedMovies
+                    onEmptyInput={handleEmptySearchRequest}
+                    movies={startSavedMovies}
+                    handleSetStartMovies={setStartSavedMovies}
+                    handleSetToggler={handleChangeSavedMoviesTogglerPosition}
+                    isClamped={savedMoviesTogglerPosition}
+                    lastRequest={savedMoviesLastRequest}
+                    setLastRequest={setSavedMoviesLastRequest}
+                  />
+                </ProtectedRoute>
+              }
             />
 
-            <Route exact path="/">
-              <Main isLoggedIn={isLoggedIn} />
-            </Route>
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <Profile
+                    onLogout={logOut}
+                    onSubmitUpdate={handleUpdateUserData}
+                    onCaseNoChanges={openErrorNotification}
+                  />
+                </ProtectedRoute>
+              }
+            />
 
-            <Route path="*">
-              <NotFound />
-            </Route>
-          </Switch>
+            <Route path="/*" element={<NotFound />} />
+          </Routes>
 
           <Footer></Footer>
         </div>

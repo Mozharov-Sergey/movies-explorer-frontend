@@ -32,13 +32,13 @@ function NavTab({ isLoggedIn, handleMenuOpen }) {
     <>
       {!isLoggedIn && (
         <nav className="nav-tab">
-          <Link to="/" className="nav-tab__logo"></Link>
+          <Link to={'/'} className="nav-tab__logo"></Link>
 
-          <Link to="/signup" className="nav-tab__registration">
+          <Link to={'/signup'} className="nav-tab__registration">
             Регистрация
           </Link>
 
-          <Link to="/signin" className="nav-tab__signin">
+          <Link to={'/signin'} className="nav-tab__signin">
             Войти
           </Link>
         </nav>
@@ -46,11 +46,11 @@ function NavTab({ isLoggedIn, handleMenuOpen }) {
 
       {isLoggedIn && (
         <nav className={`nav-tab ${(location.pathname !== '/' && 'nav-tab_films') || ''}`}>
-          <Link to="/" className="nav-tab__logo nav-tab__logo_films"></Link>
+          <Link to={'/'} className="nav-tab__logo nav-tab__logo_films"></Link>
           {!isMSize && (
             <>
               <Link
-                to="/movies"
+                to={'/movies'}
                 className={`nav-tab__item ${(isMovies && 'nav-tab__item_active') || ''} ${
                   location.pathname === '/' && 'nav-tab__item_landing'
                 }`}
@@ -58,14 +58,14 @@ function NavTab({ isLoggedIn, handleMenuOpen }) {
                 Фильмы
               </Link>
               <Link
-                to="/saved-movies"
+                to={'/saved-movies'}
                 className={`nav-tab__item ${(isSavedMovies && 'nav-tab__item_active') || ''} ${
                   location.pathname === '/' && 'nav-tab__item_landing'
                 }`}
               >
                 Сохраненные фильмы
               </Link>
-              <Link to="/profile" className="nav-tab__account-container">
+              <Link to={'/profile'} className="nav-tab__account-container">
                 <Account isActive={isProfile} isMenuPlaced={false} />
               </Link>
             </>
