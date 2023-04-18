@@ -2,41 +2,45 @@ import React from 'react';
 
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import moviesApi from '../../utils/MoviesApi';
 import Preloader from '../Preloader/Preloader/Preloader';
 import { shortFilmDuration } from '../../utils/constants';
 
-function SavedMovies({ onEmptyInput, handleSetStartMovies, movies, handleSetToggler }) {
-  const [savedMoviesList, setSavedMoviesList] = React.useState({});
+function SavedMovies({
+  onEmptyInput,
+  handleSetStartMovies,
+  // handleSetToggler,
+  onLike,
+  onDislike,
+  savedMovies,
+}) {
   const [showMoviesList, setShowMoviesList] = React.useState({});
   const [emptySearchResult, setEmptySearchResult] = React.useState(false);
   const [searchFailed, setSearchFailed] = React.useState(false);
   const [showPreloader, setShowPreloader] = React.useState(false);
   const [isShorts, setIsShorts] = React.useState(handleSetToggler());
+  const [filteredList, setFilteredList] = React.useState([]);
 
   React.useEffect(() => {
-    if (Object.keys(movies).length === 0) {
-      getMovies();
-      handleSetStartMovies(savedMoviesList);
-      setShowMoviesList(savedMoviesList);
+    if (savedMovies) {
+      setShowMoviesList(savedMovies);
+      handleSetStartMovies(savedMovies);
     } else {
-      setShowMoviesList(movies);
+      setShowMoviesList(savedMovies);
     }
   }, []);
 
-  async function getMovies() {
-    try {
-      let films = await moviesApi.getSavedFilms();
-      setSavedMoviesList(films);
-      setShowMoviesList(films);
-      return films;
-    } catch (err) {
-      console.log(err);
-    }
+  function handleDislike(movie) {
+    onDislike(movie);
+    const updatedMovieList = showMoviesList.filter((item) => {
+      if (movie.movieId !== item.movieId) {
+        return item;
+      }
+    });
+    setShowMoviesList(updatedMovieList);
   }
 
   function findFilmsLocal(request) {
-    let films = savedMoviesList;
+    let films = savedMovies;
 
     let filteredFilms = films.filter((movie) => {
       return movie.nameRU.toLowerCase().includes(request.toLowerCase());
@@ -49,6 +53,7 @@ function SavedMovies({ onEmptyInput, handleSetStartMovies, movies, handleSetTogg
     }
 
     setShowMoviesList(filteredFilms);
+    setFilteredList(filteredFilms);
     setShowPreloader(false);
 
     if (filteredFilms.length === 0) {
@@ -87,9 +92,6 @@ function SavedMovies({ onEmptyInput, handleSetStartMovies, movies, handleSetTogg
   }
 
   return (
-    // У карточек, которые приходят с API нет поля isLiked, но мы знаем, что
-    // все карточки, которые сохранены лайкнуты по определению.
-    // За это и отвечает пропс isSaved={true}
     <>
       <div className="saved-movies">
         <SearchForm
@@ -102,7 +104,12 @@ function SavedMovies({ onEmptyInput, handleSetStartMovies, movies, handleSetTogg
           onEmptyInput={onEmptyInput}
         ></SearchForm>
         {showPreloader && <Preloader></Preloader>}
-        <MoviesCardList moviesList={showMoviesList} isSaved={true} />
+        <MoviesCardList
+          moviesList={showMoviesList}
+          onLike={onLike}
+          onDislike={handleDislike}
+          savedMovies={savedMovies}
+        />
       </div>
     </>
   );

@@ -1,11 +1,10 @@
-import card from '../../images/cards/card_image_1.jpg';
 import imageNotFound from '../../images/cards/imageNotFound.png';
 import React from 'react';
-import moviesApi from '../../utils/MoviesApi';
+import { useLocation } from 'react-router-dom';
 
-function MoviesCard({ movie }) {
+function MoviesCard({ movie, onLike, onDislike, savedMovies }) {
+  const { pathname } = useLocation();
   const [isLiked, setIsLiked] = React.useState(movie.isLiked);
-  const [isSaved, setIsSaved] = React.useState(movie.isSaved);
   const [posterImage, setPosterImage] = React.useState('');
   const [formatedDuration, setFormatedDuratiion] = React.useState('');
 
@@ -15,24 +14,16 @@ function MoviesCard({ movie }) {
   });
 
   React.useEffect(() => {
-    if (movie.isLiked) {
-      setIsLiked(true);
-    }
+    setIsLiked(getSavedMovie(savedMovies, movie));
   });
 
   function posterProtector() {
-    if (movie.isSaved) {
-      if (!movie.image) {
-        setPosterImage(imageNotFound);
-      } else {
-        setPosterImage(movie.image);
-      }
+    if (movie.image.url) {
+      setPosterImage('https://api.nomoreparties.co' + movie.image.url);
+    } else if (movie.image) {
+      setPosterImage(movie.image);
     } else {
-      if (!movie.image.url) {
-        setPosterImage(imageNotFound);
-      } else {
-        setPosterImage('https://api.nomoreparties.co' + movie.image.url);
-      }
+      setPosterImage(imageNotFound);
     }
   }
 
@@ -42,56 +33,43 @@ function MoviesCard({ movie }) {
     setFormatedDuratiion(`${hours}ч ${minutes}мин`);
   }
 
-  function handleLikeClick() {
-    if (!isSaved && !isLiked) {
-      moviesApi.addToSavedMovies(movie).then((res) => {
-        movie._id = res.createdMovie._id;
-        setIsLiked(true);
+  function getSavedMovie(list, movie) {
+    if (list) {
+      return list.find((item) => {
+        return item.movieId === (movie.id || movie.movieId);
       });
     }
   }
 
-  function handleRemoveCard() {
-    if (isSaved || isLiked) {
-      setIsSaved(false);
-      setIsLiked(false);
-      moviesApi.removeFromSavedMovies(movie);
-    }
+  function handleLike() {
+    onLike(movie);
+  }
+
+  function handleDislike() {
+    onDislike(movie);
   }
 
   return (
-    <>
-      {!isSaved && !movie.isSaved && (
-        <div className="movies-card">
-          <a href={movie.trailerLink} target="_blank">
-            <img className="movies-card__image" src={posterImage} alt={movie.image.alternativeText}></img>
-          </a>
-          <div className="movies-card__info">
-            <p className="movies-card__title">{movie.nameRU}</p>
-            <button
-              className={`movies-card__like ${isLiked && 'movies-card__like_active'}`}
-              onClick={handleLikeClick}
-            ></button>
-          </div>
-          <div className="movies-card__hr"></div>
-          <p className="movies-card__duration">{formatedDuration}</p>
-        </div>
-      )}
-
-      {isSaved && (
-        <div className="movies-card">
-          <a href={movie.trailerLink} target="_blank">
-            <img className="movies-card__image" src={posterImage} alt={movie.image.alternativeText}></img>
-          </a>
-          <div className="movies-card__info">
-            <p className="movies-card__title">{movie.nameRU}</p>
-            <button className="movies-card__delete" onClick={handleRemoveCard}></button>
-          </div>
-          <div className="movies-card__hr"></div>
-          <p className="movies-card__duration">{formatedDuration}</p>
-        </div>
-      )}
-    </>
+    <div className="movies-card">
+      <a href={movie.trailerLink} target="_blank">
+        <img className="movies-card__image" src={posterImage} alt={movie.image.alternativeText}></img>
+      </a>
+      <div className="movies-card__info">
+        <p className="movies-card__title">{movie.nameRU}</p>
+        {pathname === '/movies' && (
+          <button
+            onClick={isLiked ? handleDislike : handleLike}
+            className={`movies-card__like ${isLiked && 'movies-card__like_active'}`}
+            type="button"
+          ></button>
+        )}
+        {pathname === '/saved-movies' && (
+          <button onClick={handleDislike} className="movies-card__delete" type="button"></button>
+        )}
+      </div>
+      <div className="movies-card__hr"></div>
+      <p className="movies-card__duration">{formatedDuration}</p>
+    </div>
   );
 }
 

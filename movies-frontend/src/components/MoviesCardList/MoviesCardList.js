@@ -3,7 +3,7 @@ import useResize from 'use-resize';
 import React from 'react';
 import { showCardsStep, startCardsNumber } from '../../utils/constants';
 
-function MoviesCardList({ moviesList, isSaved, likes }) {
+function MoviesCardList({ moviesList, onLike, onDislike, savedMovies }) {
   const size = useResize();
   const [showMoreButton, setShowMoreButton] = React.useState(false);
   const [pointer, setPointer] = React.useState(0);
@@ -74,18 +74,15 @@ function MoviesCardList({ moviesList, isSaved, likes }) {
       {Object.keys(moviesList).length !== 0 && (
         <ul className="card-list">
           {showList.map((item, index) => {
-            if (isSaved) {
-              item.isSaved = true;
-              item.isLiked = true;
-            } else if (likes) {
-              if (likes.includes(item.id)) {
-                item.isLiked = true;
-              }
-            }
 
             return (
               <li className="card-list__item" key={index}>
-                <MoviesCard movie={item} />
+                <MoviesCard
+                  movie={item}
+                  onLike={onLike}
+                  onDislike={onDislike}
+                  savedMovies={savedMovies}
+                />
               </li>
             );
           })}

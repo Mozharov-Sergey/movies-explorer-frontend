@@ -13,6 +13,7 @@ import Menu from '../Menu/Menu';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Infotooltip from '../InfoTooltip/InfoTooltip';
+import moviesApi from '../../utils/MoviesApi.js';
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
   const locations = ['/', '/movies', '/saved-movies', '/profile'];
 
   //SavedMovies
+  const [savedMovies, setSavedMovies] = React.useState({});
   const [startSavedMovies, setStartSavedMovies] = React.useState({});
   const [savedMoviesTogglerPosition, setSavedMoviesTogglerPosition] = React.useState(true);
   const [savedMoviesLastRequest, setSavedMoviesLastRequest] = React.useState('');
@@ -59,6 +61,8 @@ function App() {
     if (lastPath) {
       navigate(lastPath);
     }
+
+    // sessionStorage.clear();
   }, []);
 
   function tokenCheck() {
@@ -158,7 +162,54 @@ function App() {
     setSavedMoviesTogglerPosition(true);
     setSavedMoviesLastRequest('');
     localStorage.clear();
+    sessionStorage.clear();
     navigate('/');
+  }
+
+  // получить сохраненные фильмы
+  React.useEffect(() => {
+    let savedMoviesList = localStorage.getItem('saved_movies');
+
+    if (isLoggedIn && savedMoviesList.length === 2) {
+      moviesApi
+        .getSavedFilms()
+        .then((res) => {
+          setSavedMovies(res);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      savedMoviesList = JSON.parse(savedMoviesList);
+      setSavedMovies(savedMoviesList);
+    }
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    localStorage.setItem('saved_movies', JSON.stringify(savedMovies));
+  }, [currentUser, savedMovies]);
+
+  function likeMovie(movie) {
+    moviesApi
+      .addToSavedMovies(movie)
+      .then((savedMovie) => {
+        setSavedMovies([savedMovie.createdMovie, ...savedMovies]);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function dislikeMovie(movie) {
+    const targetdMovie = savedMovies.find(
+      (item) => item.movieId === movie.id || item.movieId === movie.movieId
+    );
+
+    moviesApi
+      .removeFromSavedMovies(targetdMovie)
+      .then(() => {
+        const newMoviesList = savedMovies.filter((item) => {
+          return !(movie.id === item.movieId || movie.movieId === item.movieId);
+        });
+        setSavedMovies(newMoviesList);
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -186,7 +237,12 @@ function App() {
               path="/movies"
               element={
                 <ProtectedRoute isLoggedIn={isLoggedIn}>
-                  <Movies onEmptyInput={handleEmptySearchRequest} />
+                  <Movies
+                    onEmptyInput={handleEmptySearchRequest}
+                    onLike={likeMovie}
+                    onDislike={dislikeMovie}
+                    savedMovies={savedMovies}
+                  />
                 </ProtectedRoute>
               }
             />
@@ -197,12 +253,15 @@ function App() {
                 <ProtectedRoute isLoggedIn={isLoggedIn}>
                   <SavedMovies
                     onEmptyInput={handleEmptySearchRequest}
-                    movies={startSavedMovies}
+                    // movies={startSavedMovies}
                     handleSetStartMovies={setStartSavedMovies}
                     handleSetToggler={handleChangeSavedMoviesTogglerPosition}
                     isClamped={savedMoviesTogglerPosition}
                     lastRequest={savedMoviesLastRequest}
                     setLastRequest={setSavedMoviesLastRequest}
+                    onLike={likeMovie}
+                    onDislike={dislikeMovie}
+                    savedMovies={savedMovies}
                   />
                 </ProtectedRoute>
               }

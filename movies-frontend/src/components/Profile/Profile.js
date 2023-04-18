@@ -8,15 +8,24 @@ function Profile({ onLogout, onSubmitUpdate, onCaseNoChanges }) {
 
   React.useEffect(() => {
     setValues({ name: currentUser.name, email: currentUser.email });
-    // setIsValid(false); // На тот случай, если по дефолту кнопка должна быть заблокирована
+    setIsValid(false); // по дефолту кнопка должна быть заблокирована
   }, []);
 
-  function handleEditUserData() {
-    if(currentUser.name !== values.name || currentUser.email !== values.email) {
+
+  // Блокирует кнопку отправить если нет изменений или не пройдена валидация
+  React.useEffect(() => {
+    (currentUser.name !== values.name || currentUser.email !== values.email) && isValid
+      ? setIsValid(true)
+      : setIsValid(false);
+  }, [values]);
+
+
+  // Сохранить изменения
+   function handleEditUserData() {
+    if (currentUser.name !== values.name || currentUser.email !== values.email) {
       onSubmitUpdate({ email: values.email, name: values.name });
-    }
-    else {
-      onCaseNoChanges('Необходимо изменить хотя бы одно поле')
+    } else {
+      onCaseNoChanges('Необходимо изменить хотя бы одно поле');
     }
   }
 
@@ -56,7 +65,11 @@ function Profile({ onLogout, onSubmitUpdate, onCaseNoChanges }) {
         </div>
 
         <div className="profile__controllers">
-          <p className={`profile__edit ${!isValid && 'profile__edit_disabled'}`} disabled={!isValid} onClick={handleEditUserData}>
+          <p
+            className={`profile__edit ${!isValid && 'profile__edit_disabled'}`}
+            disabled={!isValid}
+            onClick={handleEditUserData}
+          >
             Редактировать
           </p>
           <p className="profile__logout" onClick={onLogout}>
