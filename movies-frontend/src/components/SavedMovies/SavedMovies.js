@@ -5,26 +5,15 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader/Preloader';
 import { shortFilmDuration } from '../../utils/constants';
 
-function SavedMovies({
-  onEmptyInput,
-  handleSetStartMovies,
-  // handleSetToggler,
-  onLike,
-  onDislike,
-  savedMovies,
-}) {
+function SavedMovies({ onEmptyInput, onLike, onDislike, savedMovies }) {
   const [showMoviesList, setShowMoviesList] = React.useState({});
   const [emptySearchResult, setEmptySearchResult] = React.useState(false);
   const [searchFailed, setSearchFailed] = React.useState(false);
   const [showPreloader, setShowPreloader] = React.useState(false);
   const [isShorts, setIsShorts] = React.useState(handleSetToggler());
-  const [filteredList, setFilteredList] = React.useState([]);
 
   React.useEffect(() => {
     if (savedMovies) {
-      setShowMoviesList(savedMovies);
-      handleSetStartMovies(savedMovies);
-    } else {
       setShowMoviesList(savedMovies);
     }
   }, []);
@@ -53,7 +42,6 @@ function SavedMovies({
     }
 
     setShowMoviesList(filteredFilms);
-    setFilteredList(filteredFilms);
     setShowPreloader(false);
 
     if (filteredFilms.length === 0) {

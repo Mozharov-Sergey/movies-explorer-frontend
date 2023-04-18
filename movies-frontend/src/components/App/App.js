@@ -31,7 +31,6 @@ function App() {
 
   //SavedMovies
   const [savedMovies, setSavedMovies] = React.useState({});
-  const [startSavedMovies, setStartSavedMovies] = React.useState({});
   const [savedMoviesTogglerPosition, setSavedMoviesTogglerPosition] = React.useState(true);
   const [savedMoviesLastRequest, setSavedMoviesLastRequest] = React.useState('');
 
@@ -61,8 +60,6 @@ function App() {
     if (lastPath) {
       navigate(lastPath);
     }
-
-    // sessionStorage.clear();
   }, []);
 
   function tokenCheck() {
@@ -253,8 +250,6 @@ function App() {
                 <ProtectedRoute isLoggedIn={isLoggedIn}>
                   <SavedMovies
                     onEmptyInput={handleEmptySearchRequest}
-                    // movies={startSavedMovies}
-                    handleSetStartMovies={setStartSavedMovies}
                     handleSetToggler={handleChangeSavedMoviesTogglerPosition}
                     isClamped={savedMoviesTogglerPosition}
                     lastRequest={savedMoviesLastRequest}
