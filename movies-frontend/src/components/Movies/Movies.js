@@ -29,6 +29,7 @@ function Movies({ onEmptyInput, onLike, onDislike, savedMovies }) {
 
   function handleSetToggler() {
     let pos = localStorage.getItem('isShorts');
+    console.log(pos)
     if (pos === null || pos === 'false') {
       return false;
     } else {

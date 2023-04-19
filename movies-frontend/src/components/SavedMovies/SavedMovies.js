@@ -10,7 +10,7 @@ function SavedMovies({ onEmptyInput, onLike, onDislike, savedMovies }) {
   const [emptySearchResult, setEmptySearchResult] = React.useState(false);
   const [searchFailed, setSearchFailed] = React.useState(false);
   const [showPreloader, setShowPreloader] = React.useState(false);
-  const [isShorts, setIsShorts] = React.useState(handleSetToggler());
+  const [isShorts, setIsShorts] = React.useState(false);
 
   React.useEffect(() => {
     if (savedMovies) {
@@ -54,16 +54,6 @@ function SavedMovies({ onEmptyInput, onLike, onDislike, savedMovies }) {
     setEmptySearchResult(false);
     setSearchFailed(false);
     findFilmsLocal(request);
-  }
-
-  function handleSetToggler() {
-    let pos = localStorage.getItem('isSavedShorts');
-    if (pos === null || pos === 'false') {
-      return false;
-    } else {
-      localStorage.setItem('isSavedShorts', 'true');
-      return true;
-    }
   }
 
   // Сохраняем значение тумблера

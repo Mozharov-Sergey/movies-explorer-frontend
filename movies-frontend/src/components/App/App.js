@@ -60,6 +60,7 @@ function App() {
     if (lastPath) {
       navigate(lastPath);
     }
+    localStorage.removeItem('isShorts');
   }, []);
 
   function tokenCheck() {
